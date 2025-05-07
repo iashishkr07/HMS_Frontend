@@ -8,10 +8,12 @@ import Contact from '../components/Contact'
 import Footer from '../components/Footer'
 import EmergencyBanner from '../components/EmergencyBanner'
 import TopDoctors from '../components/TopDoctors'
+import Navbar from '../components/Navbar'
 
 const Home = () => {
     return (
         <div>
+            <Navbar />
             <Header />
             <ServicesInfo />
             <EmergencyBanner />
