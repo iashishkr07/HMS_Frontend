@@ -5,14 +5,29 @@ import { useNavigate } from "react-router-dom";
 const TopDoctors1 = () => {
   const navigate = useNavigate();
   const [doctors, setDoctors] = useState([]);
+  const [uniqueSpecialties, setUniqueSpecialties] = useState([]);
+
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("https://backend-z1qz.onrender.com/api/doctors");
+        const response = await axios.get(
+          "https://backend-z1qz.onrender.com/api/doctors"
+        );
         console.log("Fetched doctors:", response.data);
-        setDoctors(response.data);
+
+        // Use response.data directly, since it's already an array
+        const doctorsArray = Array.isArray(response.data) ? response.data : [];
+        setDoctors(doctorsArray);
+
+        // Extract unique specialties
+        const specialties = [
+          ...new Set(doctorsArray.map((doc) => doc.speciality)),
+        ];
+        setUniqueSpecialties(specialties);
       } catch (err) {
         console.error("Error fetching doctors:", err.message);
+        setDoctors([]);
+        setUniqueSpecialties([]);
       }
     };
 

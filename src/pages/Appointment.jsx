@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { assets } from "../assets/assets";
-import API from "../api"; // Axios config with base URL + auth token
+import API from "../api";
+import axios from "axios";
 import Navbar from "../components/Navbar";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const Appointment = () => {
   const { docId } = useParams();
@@ -29,18 +32,23 @@ const Appointment = () => {
     "4:00 PM - 5:00 PM",
     "5:30 PM - 6:30 PM",
   ];
-
   const generateAvailableDates = () => {
     const dates = [];
     const days = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     for (let i = 0; i < 7; i++) {
       const date = new Date();
       date.setDate(date.getDate() + i);
+      const year = date.getFullYear();
+      const month = date.toLocaleString("default", { month: "short" });
+      const day = days[date.getDay()];
+      const dayNum = date.getDate();
+      const fullDateStr = `${day}, ${month} ${dayNum}, ${year}`;
       dates.push({
-        day: days[date.getDay()],
-        date: date.getDate(),
-        fullDate: date,
-        month: date.toLocaleString("default", { month: "short" }),
+        day,
+        date: dayNum,
+        fullDate: fullDateStr,
+        month,
+        year,
       });
     }
     return dates;
@@ -72,7 +80,22 @@ const Appointment = () => {
     const fetchDoctors = async () => {
       try {
         const response = await API.get("/doctors");
-        const allDoctors = response.data.data;
+        console.log("API Response:", response);
+
+        if (!response.data) {
+          console.error("No data received from API");
+          return;
+        }
+
+        const allDoctors = Array.isArray(response.data)
+          ? response.data
+          : response.data.data;
+
+        if (!Array.isArray(allDoctors)) {
+          console.error("Doctors data is not an array:", allDoctors);
+          return;
+        }
+
         setDoctors(allDoctors);
 
         const selected = allDoctors.find((d) => d._id === docId);
@@ -89,7 +112,8 @@ const Appointment = () => {
           setRelatedDoctors(related);
         }
       } catch (err) {
-        console.error("Error fetching doctors:", err.message);
+        console.error("Error fetching doctors:", err);
+        console.error("Error details:", err.response?.data); 
       }
     };
 
@@ -100,28 +124,42 @@ const Appointment = () => {
     try {
       const user = JSON.parse(localStorage.getItem("user"));
       if (!user) {
-        alert("Please login to book an appointment");
+        toast.error("Please login to book an appointment");
         return;
       }
 
-      await API.post("/book-appointment", {
+      const timestamp = new Date().getTime();
+      const randomNum = Math.floor(Math.random() * 1000);
+      const userInitials = userInfo.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase();
+      const doctorInitials = docInfo.name
+        .split(" ")
+        .map((n) => n[0])
+        .join("")
+        .toUpperCase();
+      const bookingId = `BK${timestamp}${randomNum}${userInitials}${doctorInitials}`;
+
+      await axios.post("http://localhost:7000/api/book-appointment", {
+        bookingId,
         userId: user._id,
         name: userInfo.name,
         email: userInfo.email,
         phone: userInfo.phone,
-        doctorId: docInfo._id,
-        doctorName: docInfo.name,
-        date: `${selectedDate.day}, ${selectedDate.month} ${selectedDate.date}`,
-        time: selectedTime,
+        doctor: docInfo.name,
+        date: `${selectedDate.day}, ${selectedDate.month} ${selectedDate.date}, ${selectedDate.year}`,
+        timeslot: selectedTime,
         message: userInfo.message,
       });
 
-      alert("Appointment booked successfully!");
+      toast.success("Appointment booked successfully!");
       setSelectedTime(null);
       setUserInfo((prev) => ({ ...prev, message: "" }));
     } catch (err) {
       console.error(err);
-      alert("Booking failed. Try again later.");
+      toast.error("Booking failed. Try again later.");
     }
   };
 
@@ -148,6 +186,7 @@ const Appointment = () => {
   return (
     <>
       <Navbar />
+      <ToastContainer position="top-right" autoClose={3000} />
       <div className="max-w-4xl mx-auto p-4 bg-gradient-to-b from-blue-50 to-white">
         <div className="flex flex-col md:flex-row gap-8 bg-white p-6 rounded-xl shadow-sm">
           <div className="w-full md:w-1/3">

@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { FaEdit } from 'react-icons/fa';
 import { toast } from 'react-toastify';
-import axios from '../api'; // Adjust based on your project
+import axios from '../api';
+import Navbar from './Navbar';
 import 'animate.css';
 
 const UserProfile = () => {
@@ -82,6 +83,8 @@ const UserProfile = () => {
   if (!user) return <div className="p-4">Loading profile...</div>;
 
   return (
+    <>
+    <Navbar/>
     <div className="min-h-screen p-8 bg-gradient-to-br from-blue-100 via-white to-blue-50 animate__animated animate__fadeIn">
       <div className="max-w-3xl mx-auto bg-white p-6 rounded-xl shadow-lg">
         <div className="flex flex-col items-center">
@@ -102,7 +105,7 @@ const UserProfile = () => {
                     accept="image/*"
                     onChange={handleFileChange}
                     className="hidden"
-                  />
+                    />
                 </>
               )}
             </label>
@@ -121,7 +124,7 @@ const UserProfile = () => {
               <button
                 onClick={() => setEditMode(true)}
                 className="mt-6 px-6 py-2 rounded-full bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:opacity-90 transition-all"
-              >
+                >
                 Edit Profile
               </button>
             </>
@@ -134,7 +137,7 @@ const UserProfile = () => {
                 onChange={handleChange}
                 placeholder="Full Name"
                 className="w-full p-2 border rounded"
-              />
+                />
               <input
                 type="email"
                 name="Email"
@@ -142,7 +145,7 @@ const UserProfile = () => {
                 onChange={handleChange}
                 placeholder="Email"
                 className="w-full p-2 border rounded"
-              />
+                />
               <input
                 type="text"
                 name="Phone"
@@ -150,7 +153,7 @@ const UserProfile = () => {
                 onChange={handleChange}
                 placeholder="Phone"
                 className="w-full p-2 border rounded"
-              />
+                />
               <input
                 type="date"
                 name="Dob"
@@ -182,14 +185,14 @@ const UserProfile = () => {
                   type="submit"
                   disabled={loading}
                   className="flex-1 py-2 rounded-full bg-gradient-to-r from-green-400 to-blue-500 text-white hover:opacity-90 transition-all"
-                >
+                  >
                   {loading ? 'Saving...' : 'Save Changes'}
                 </button>
                 <button
                   type="button"
                   onClick={() => setEditMode(false)}
                   className="flex-1 py-2 rounded-full border border-gray-300 text-gray-700 hover:bg-gray-100 transition-all"
-                >
+                  >
                   Cancel
                 </button>
               </div>
@@ -198,6 +201,7 @@ const UserProfile = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 

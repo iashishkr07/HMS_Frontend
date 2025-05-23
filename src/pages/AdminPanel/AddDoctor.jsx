@@ -1,4 +1,3 @@
-// src/pages/AddDoctor.jsx
 import React, { useState } from "react";
 import axios from "../../api"; // Axios instance with baseURL
 import { useNavigate } from "react-router-dom";
@@ -49,7 +48,6 @@ const AddDoctor = () => {
     const file = e.target.files[0];
     if (file) {
       if (file.size > 2 * 1024 * 1024) {
-        // 2MB limit
         toast.error("Image size should be less than 2MB");
         return;
       }
@@ -64,6 +62,45 @@ const AddDoctor = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Validate all required fields
+    const requiredFields = {
+      name: "Full Name",
+      email: "Email",
+      password: "Password",
+      speciality: "Speciality",
+      degree: "Degree",
+      experience: "Experience",
+      fees: "Fees",
+      about: "About",
+      "address.street": "Street Address",
+      "address.city": "City",
+    };
+
+    const missingFields = [];
+    for (const [field, label] of Object.entries(requiredFields)) {
+      if (field.includes(".")) {
+        const [parent, child] = field.split(".");
+        if (!formData[parent][child]) {
+          missingFields.push(label);
+        }
+      } else if (!formData[field]) {
+        missingFields.push(label);
+      }
+    }
+
+    if (missingFields.length > 0) {
+      toast.error(
+        `Please fill in all required fields: ${missingFields.join(", ")}`
+      );
+      return;
+    }
+
+    if (!image) {
+      toast.error("Please upload a profile picture");
+      return;
+    }
+
     setIsSubmitting(true);
 
     try {
@@ -80,7 +117,25 @@ const AddDoctor = () => {
       const response = await axios.post("/add-doctor", data);
       console.log("Doctor added:", response.data);
       toast.success("Doctor added successfully!");
-      navigate("/doctors");
+
+      // Reset form after successful submission
+      setFormData({
+        name: "",
+        email: "",
+        password: "",
+        speciality: "",
+        degree: "",
+        experience: "",
+        about: "",
+        fees: "",
+        address: {
+          street: "",
+          city: "",
+        },
+      });
+      setImage(null);
+      setImagePreview(null);
+      setActiveSection("personal");
     } catch (err) {
       console.error("Error:", err.response?.data || err.message);
       toast.error(err.response?.data?.message || "Failed to add doctor");

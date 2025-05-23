@@ -110,7 +110,7 @@ const DoctorsList = () => {
                   <p className="font-semibold text-gray-800 text-xl">
                     Appointment fee:{" "}
                     <span className="text-indigo-600">
-                      ₹{selectedDoctor.fee || "500"}
+                      ₹{selectedDoctor.fees }
                     </span>
                   </p>
                 </div>
@@ -180,7 +180,7 @@ const DoctorsList = () => {
                     Experience
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-indigo-900">
-                    Fee
+                    Fees
                   </th>
                   <th className="px-6 py-4 text-left text-sm font-semibold text-indigo-900">
                     Status
@@ -224,7 +224,7 @@ const DoctorsList = () => {
                       </td>
                       <td className="px-6 py-4">
                         <span className="text-sm text-indigo-700">
-                          ₹{doctor.fee || "500"}
+                          ₹{doctor.fees || "500"}
                         </span>
                       </td>
                       <td className="px-6 py-4">

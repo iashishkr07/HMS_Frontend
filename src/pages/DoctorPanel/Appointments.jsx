@@ -1,33 +1,57 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 
-const Appointment = ({ doctor }) => {
+const Appointment = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [filter, setFilter] = useState("");
   const [searchType, setSearchType] = useState("all");
+  const [doctorName, setDoctorName] = useState("");
 
   useEffect(() => {
-    const fetchBookings = async () => {
+    const fetchDoctorAndBookings = async () => {
       try {
-        const encodedDoctor = encodeURIComponent(doctor);
-        const url = doctor
-          ? `https://backend-z1qz.onrender.com/api/bookings/doctor/${encodedDoctor}`
-          : `https://backend-z1qz.onrender.com/api/bookings`;
+        const token = localStorage.getItem("token");
+        if (!token) {
+          setError("Authentication required. Please login.");
+          setLoading(false);
+          return;
+        }
 
-        const response = await axios.get(url);
-        setBookings(response.data);
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+
+        const doctorResponse = await axios.get(
+          "https://backend-z1qz.onrender.com/api/doctor/me",
+          config
+        );
+        const doctor = doctorResponse.data.name;
+        setDoctorName(doctor);
+
+        const encodedDoctor = encodeURIComponent(doctor);
+        const bookingsResponse = await axios.get(
+          `https://backend-z1qz.onrender.com/api/bookings/doctor/${encodedDoctor}`,
+          config
+        );
+        setBookings(bookingsResponse.data);
         setLoading(false);
       } catch (err) {
-        setError("Failed to fetch bookings");
+        if (err.response?.status === 401) {
+          setError("Session expired. Please login again.");
+        } else {
+          setError("Failed to fetch data");
+        }
         setLoading(false);
-        console.error("Error fetching bookings:", err);
+        console.error("Error fetching data:", err);
       }
     };
 
-    fetchBookings();
-  }, [doctor]);
+    fetchDoctorAndBookings();
+  }, []);
 
   const filteredBookings = bookings.filter((booking) => {
     const searchTerm = filter.toLowerCase();
@@ -41,9 +65,15 @@ const Appointment = ({ doctor }) => {
       case "doctor":
         return doctorName.includes(searchTerm);
       case "patient":
-        return patientName.includes(searchTerm) || patientEmail.includes(searchTerm);
+        return (
+          patientName.includes(searchTerm) || patientEmail.includes(searchTerm)
+        );
       default:
-        return doctorName.includes(searchTerm) || patientName.includes(searchTerm) || patientEmail.includes(searchTerm);
+        return (
+          doctorName.includes(searchTerm) ||
+          patientName.includes(searchTerm) ||
+          patientEmail.includes(searchTerm)
+        );
     }
   });
 
@@ -74,7 +104,9 @@ const Appointment = ({ doctor }) => {
   if (error) {
     return (
       <div className="max-w-md mx-auto mt-10 p-6 bg-red-50 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold text-center mb-4 text-red-600">Error</h2>
+        <h2 className="text-xl font-semibold text-center mb-4 text-red-600">
+          Error
+        </h2>
         <p className="text-gray-600 mb-6">{error}</p>
         <div className="flex justify-center">
           <button
@@ -92,7 +124,7 @@ const Appointment = ({ doctor }) => {
     <div className="container mx-auto px-4 py-8">
       <div className="mb-8">
         <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          {doctor ? `Bookings for ${doctor}` : "All Bookings"}
+          {doctorName ? `Bookings for ${doctorName}` : "Loading..."}
         </h1>
         <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
           <div className="flex flex-col md:flex-row gap-4 flex-grow">
@@ -145,7 +177,9 @@ const Appointment = ({ doctor }) => {
             {filter ? "No matching bookings found" : "No bookings available"}
           </h3>
           <p className="text-gray-500">
-            {filter ? "Try a different search term" : "Check back later for new bookings"}
+            {filter
+              ? "Try a different search term"
+              : "Check back later for new bookings"}
           </p>
         </div>
       ) : (

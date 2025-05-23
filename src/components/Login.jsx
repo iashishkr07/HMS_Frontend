@@ -17,7 +17,6 @@ const Login = () => {
         toast.success(`${state} logged in successfully`)
         localStorage.setItem('token', response.data.token)
 
-        // Navigate to panel
         if (state === 'Admin') {
           navigate('/admin')
           window.location.reload();

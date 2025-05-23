@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 const API = axios.create({
-  baseURL: 'https://backend-z1qz.onrender.com/api', // Make sure this is correct
+  baseURL: 'https://backend-z1qz.onrender.com/api',
 });
 
 // Automatically attach the JWT token if available
