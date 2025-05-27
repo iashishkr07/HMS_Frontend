@@ -118,7 +118,8 @@ const MyAppointments = () => {
           const bookingsWithDoctorDetails = await Promise.all(
             validBookings.map(async (booking) => {
               try {
-                const doctorRes = await axios.get(`https://backend-z1qz.onrender.com/api/doctors/name/${booking.doctor}`
+                const doctorRes = await axios.get(
+                  `https://backend-z1qz.onrender.com/api/doctors/name/${booking.doctor}`
                 );
                 return { ...booking, doctorDetails: doctorRes.data.data };
               } catch (doctorErr) {
