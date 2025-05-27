@@ -142,13 +142,15 @@ const Appointment = () => {
         .toUpperCase();
       const bookingId = `BK${timestamp}${randomNum}${userInitials}${doctorInitials}`;
 
-      await axios.post("http://localhost:7000/api/book-appointment", {
+      await axios.post("https://backend-z1qz.onrender.com/api/book-appointment", {
         bookingId,
         userId: user._id,
         name: userInfo.name,
         email: userInfo.email,
         phone: userInfo.phone,
         doctor: docInfo.name,
+        doctoremail: docInfo.email,
+        fees: docInfo.fees,
         date: `${selectedDate.day}, ${selectedDate.month} ${selectedDate.date}, ${selectedDate.year}`,
         timeslot: selectedTime,
         message: userInfo.message,
@@ -229,7 +231,7 @@ const Appointment = () => {
             <div className="p-4 border border-blue-200 rounded-lg bg-white">
               <p className="font-semibold text-blue-800">
                 Appointment fee:{" "}
-                <span className="text-blue-600 font-bold">₹500</span>
+                <span className="text-blue-600 font-bold">₹{docInfo.fees}</span>
               </p>
             </div>
           </div>
