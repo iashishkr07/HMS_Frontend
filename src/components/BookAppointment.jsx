@@ -40,7 +40,9 @@ const BookAppointment = () => {
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("https://backend-z1qz.onrender.com/api/doctors");
+        const response = await axios.get(
+          "https://backend-z1qz.onrender.com/api/doctors"
+        );
         console.log("Fetched doctors:", response.data);
         if (Array.isArray(response.data)) {
           setDoctors(response.data);
@@ -308,6 +310,20 @@ const BookAppointment = () => {
                             <FaCalendarAlt className="text-blue-500 mr-1 sm:mr-2 text-sm sm:text-base" />
                             <span className="text-xs sm:text-sm font-medium text-blue-700">
                               Available: 10 AM – 4 PM
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-center mb-2 sm:mb-3">
+                            <FaEnvelope className="text-blue-500 mr-1 sm:mr-2 text-sm sm:text-base" />
+                            <span className="text-xs sm:text-sm font-medium text-blue-700">
+                              {doctor.email || "Email: Contact reception"}
+                            </span>
+                          </div>
+
+                          <div className="flex items-center justify-center mb-2 sm:mb-3">
+                            <span className="text-xs sm:text-sm font-medium text-blue-700">
+                              Consultation Fee: ₹
+                              {doctor.fees || "Contact for details"}
                             </span>
                           </div>
 
