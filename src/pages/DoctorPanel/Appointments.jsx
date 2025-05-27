@@ -1,226 +1,203 @@
-import React, { useState, useEffect } from "react";
-import axios from "axios";
+import React, { useEffect, useState } from "react";
+import doctorApi from "../../doctorApi";
 
-const Appointment = () => {
+const Appointments = () => {
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  const [filter, setFilter] = useState("");
-  const [searchType, setSearchType] = useState("all");
-  const [doctorName, setDoctorName] = useState("");
 
   useEffect(() => {
-    const fetchDoctorAndBookings = async () => {
+    const fetchBookings = async () => {
       try {
-        const token = localStorage.getItem("token");
-        if (!token) {
-          setError("Authentication required. Please login.");
-          setLoading(false);
-          return;
-        }
-
-        const config = {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        };
-
-        const doctorResponse = await axios.get(
-          "https://backend-z1qz.onrender.com/api/doctor/me",
-          config
-        );
-        const doctor = doctorResponse.data.name;
-        setDoctorName(doctor);
-
-        const encodedDoctor = encodeURIComponent(doctor);
-        const bookingsResponse = await axios.get(
-          `https://backend-z1qz.onrender.com/api/bookings/doctor/${encodedDoctor}`,
-          config
-        );
-        setBookings(bookingsResponse.data);
+        setLoading(true);
+        const response = await doctorApi.get("/doctor/bookings");
+        setBookings(response.data.bookings);
+      } catch (error) {
+        console.error("Error fetching bookings:", error);
+      } finally {
         setLoading(false);
-      } catch (err) {
-        if (err.response?.status === 401) {
-          setError("Session expired. Please login again.");
-        } else {
-          setError("Failed to fetch data");
-        }
-        setLoading(false);
-        console.error("Error fetching data:", err);
       }
     };
-
-    fetchDoctorAndBookings();
+    fetchBookings();
   }, []);
 
-  const filteredBookings = bookings.filter((booking) => {
-    const searchTerm = filter.toLowerCase();
-    if (!searchTerm) return true;
-
-    const doctorName = booking?.doctor?.toLowerCase() || "";
-    const patientName = booking?.name?.toLowerCase() || "";
-    const patientEmail = booking?.email?.toLowerCase() || "";
-
-    switch (searchType) {
-      case "doctor":
-        return doctorName.includes(searchTerm);
-      case "patient":
-        return (
-          patientName.includes(searchTerm) || patientEmail.includes(searchTerm)
-        );
+  const getStatusColor = (status) => {
+    switch (status?.toLowerCase()) {
+      case "confirmed":
+        return "bg-green-100 text-green-800";
+      case "pending":
+        return "bg-yellow-100 text-yellow-800";
+      case "cancelled":
+        return "bg-red-100 text-red-800";
       default:
-        return (
-          doctorName.includes(searchTerm) ||
-          patientName.includes(searchTerm) ||
-          patientEmail.includes(searchTerm)
-        );
+        return "bg-blue-100 text-blue-800";
     }
-  });
-
-  const formatDate = (dateString) => {
-    const options = { weekday: "short", month: "short", day: "numeric" };
-    return new Date(dateString).toLocaleDateString("en-US", options);
-  };
-
-  const formatDateTime = (dateString) => {
-    const options = {
-      year: "numeric",
-      month: "short",
-      day: "numeric",
-      hour: "2-digit",
-      minute: "2-digit",
-    };
-    return new Date(dateString).toLocaleDateString("en-US", options);
   };
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
-      </div>
-    );
-  }
-
-  if (error) {
-    return (
-      <div className="max-w-md mx-auto mt-10 p-6 bg-red-50 rounded-lg shadow-md">
-        <h2 className="text-xl font-semibold text-center mb-4 text-red-600">
-          Error
-        </h2>
-        <p className="text-gray-600 mb-6">{error}</p>
-        <div className="flex justify-center">
-          <button
-            onClick={() => window.location.reload()}
-            className="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition duration-200"
-          >
-            Retry
-          </button>
-        </div>
+      <div className="min-h-screen bg-gray-50 p-8 flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
       </div>
     );
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="mb-8">
-        <h1 className="text-3xl font-bold text-gray-800 mb-2">
-          {doctorName ? `Bookings for ${doctorName}` : "Loading..."}
-        </h1>
-        <div className="flex flex-col md:flex-row md:items-center justify-between gap-4">
-          <div className="flex flex-col md:flex-row gap-4 flex-grow">
-            <select
-              value={searchType}
-              onChange={(e) => setSearchType(e.target.value)}
-              className="px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-            >
-              <option value="all">Search All</option>
-              <option value="doctor">Search by Doctor</option>
-              <option value="patient">Search by Patient</option>
-            </select>
-            <div className="relative flex-grow">
-              <input
-                type="text"
-                placeholder={`Search ${
-                  searchType === "doctor"
-                    ? "doctor"
-                    : searchType === "patient"
-                    ? "patient"
-                    : "bookings"
-                }...`}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                value={filter}
-                onChange={(e) => setFilter(e.target.value)}
-              />
-              <svg
-                className="absolute right-3 top-2.5 h-5 w-5 text-gray-400"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
-          </div>
-          <div className="text-gray-600">
-            Showing {filteredBookings.length} of {bookings.length} bookings
-          </div>
+    <div className="min-h-screen bg-gray-50 p-8">
+      <div className="max-w-7xl mx-auto">
+        <div className="flex justify-between items-center mb-8 border-b pb-4">
+          <h2 className="text-3xl font-bold text-gray-800">
+            Doctor's Appointments
+          </h2>
+          <span className="text-sm text-gray-500">
+            Total Appointments: {bookings.length}
+          </span>
         </div>
-      </div>
 
-      {filteredBookings.length === 0 ? (
-        <div className="bg-white rounded-lg shadow-md p-8 text-center">
-          <h3 className="text-lg font-medium text-gray-700 mb-2">
-            {filter ? "No matching bookings found" : "No bookings available"}
-          </h3>
-          <p className="text-gray-500">
-            {filter
-              ? "Try a different search term"
-              : "Check back later for new bookings"}
-          </p>
-        </div>
-      ) : (
-        <div className="bg-white rounded-lg shadow-md overflow-hidden">
-          <div className="grid grid-cols-12 bg-gray-100 p-4 font-medium text-gray-700">
-            <div className="col-span-2">Patient</div>
-            <div className="col-span-2">Contact</div>
-            <div className="col-span-2">Doctor</div>
-            <div className="col-span-2">Appointment Date</div>
-            <div className="col-span-2">Notes</div>
-            <div className="col-span-2">Booked On</div>
-          </div>
-          {filteredBookings.map((booking) => (
-            <div
-              key={booking._id}
-              className="grid grid-cols-12 p-4 border-t hover:bg-gray-50 transition-colors"
+        {bookings.length === 0 ? (
+          <div className="text-center py-16 bg-white rounded-xl shadow-sm border border-gray-100">
+            <svg
+              className="mx-auto h-12 w-12 text-gray-400"
+              fill="none"
+              stroke="currentColor"
+              viewBox="0 0 24 24"
             >
-              <div className="col-span-2 font-medium">{booking.name}</div>
-              <div className="col-span-2">
-                <div className="text-gray-600">{booking.email}</div>
-                <div className="text-sm text-gray-500">{booking.phone}</div>
+              <path
+                strokeLinecap="round"
+                strokeLinejoin="round"
+                strokeWidth="2"
+                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"
+              />
+            </svg>
+            <h3 className="mt-4 text-lg font-medium text-gray-900">
+              No appointments found
+            </h3>
+            <p className="mt-2 text-gray-500">
+              Your appointment list is currently empty.
+            </p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {bookings.map((booking) => (
+              <div
+                key={booking._id}
+                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-all duration-300 overflow-hidden border border-gray-100"
+              >
+                <div className="p-6">
+                  <div className="flex items-center justify-between mb-4">
+                    <span
+                      className={`px-3 py-1 rounded-full text-sm font-medium ${getStatusColor(
+                        booking.status
+                      )}`}
+                    >
+                      {booking.bookingId}
+                    </span>
+                    <span className="text-sm font-medium text-gray-600">
+                      {new Date(booking.date).toLocaleDateString("en-US", {
+                        weekday: "short",
+                        year: "numeric",
+                        month: "short",
+                        day: "numeric",
+                      })}
+                    </span>
+                  </div>
+
+                  <div className="space-y-4">
+                    <div className="flex items-center">
+                      <div className="flex-shrink-0 h-10 w-10 rounded-full bg-blue-100 flex items-center justify-center">
+                        <svg
+                          className="w-5 h-5 text-blue-600"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"
+                          />
+                        </svg>
+                      </div>
+                      <div className="ml-4">
+                        <p className="text-gray-900 font-semibold">
+                          {booking.name}
+                        </p>
+                        <p className="text-sm text-gray-500">Patient</p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2">
+                      <div className="flex items-center text-gray-600">
+                        <svg
+                          className="w-5 h-5 text-gray-400 mr-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"
+                          />
+                        </svg>
+                        <p className="text-sm">{booking.email}</p>
+                      </div>
+
+                      <div className="flex items-center text-gray-600">
+                        <svg
+                          className="w-5 h-5 text-gray-400 mr-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
+                          />
+                        </svg>
+                        <p className="text-sm">{booking.phone}</p>
+                      </div>
+
+                      <div className="flex items-center text-gray-600">
+                        <svg
+                          className="w-5 h-5 text-gray-400 mr-3"
+                          fill="none"
+                          stroke="currentColor"
+                          viewBox="0 0 24 24"
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            strokeWidth="2"
+                            d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                          />
+                        </svg>
+                        <p className="text-sm">{booking.timeslot}</p>
+                      </div>
+                    </div>
+
+                    {booking.message && (
+                      <div className="mt-4 pt-4 border-t border-gray-100">
+                        <p className="text-sm text-gray-600">
+                          <span className="font-medium text-gray-700">
+                            Message:{" "}
+                          </span>
+                          {booking.message}
+                        </p>
+                      </div>
+                    )}
+                  </div>
+                </div>
               </div>
-              <div className="col-span-2">{booking.doctor}</div>
-              <div className="col-span-2">
-                {formatDate(booking.date)}
-                {booking.time && (
-                  <div className="text-sm text-gray-500">{booking.time}</div>
-                )}
-              </div>
-              <div className="col-span-2 text-gray-600">
-                {booking.message || "-"}
-              </div>
-              <div className="col-span-2 text-sm text-gray-500">
-                {formatDateTime(booking.createdAt)}
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
 
-export default Appointment;
+export default Appointments;
