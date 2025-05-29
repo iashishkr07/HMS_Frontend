@@ -1,7 +1,4 @@
-// import React from 'react'
-// import {doctors} from '../assets/assets'
 import { useNavigate } from "react-router-dom";
-// import { AppContext } from '../context/AppContext'
 import axios from "axios";
 import { useEffect, useState } from "react";
 
@@ -9,10 +6,23 @@ const TopDoctors = () => {
   const navigate = useNavigate();
 
   const [doctors, setDoctors] = useState([]);
+
+  const handleNavigation = () => {
+    const token = localStorage.getItem("token");
+    if (token) {
+      navigate("/doctors1");
+    } else {
+      navigate("/doctors");
+    }
+    scrollTo(0, 0);
+  };
+
   useEffect(() => {
     const fetchDoctors = async () => {
       try {
-        const response = await axios.get("https://backend-z1qz.onrender.com/api/doctors");
+        const response = await axios.get(
+          "https://backend-z1qz.onrender.com/api/doctors"
+        );
         console.log("Fetched doctors:", response.data);
         setDoctors(response.data);
       } catch (err) {
@@ -23,7 +33,6 @@ const TopDoctors = () => {
     fetchDoctors();
   }, []);
 
-  // const {doctors} =useContext(AppContext)
   return (
     <div className=" flex flex-col items-center gap-4 my-16 text-gray-900 md:mx-10">
       <h1 className="text-3xl font-medium">Top Doctors to Book</h1>
@@ -47,10 +56,7 @@ const TopDoctors = () => {
           ))}
       </div>
       <button
-        onClick={() => {
-          navigate("/doctors");
-          scrollTo(0, 0);
-        }}
+        onClick={handleNavigation}
         className="bg-blue-50 text-gray-600 px-12 py-3 mt-10 rounded-full"
       >
         more
