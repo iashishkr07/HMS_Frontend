@@ -4,6 +4,17 @@ import { assets } from "../assets/assets";
 import Navbar from "../components/Navbar";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import {
+  FaCalendarAlt,
+  FaUserMd,
+  FaPhone,
+  FaStickyNote,
+  FaExclamationTriangle,
+  FaTimes,
+  FaEdit,
+  FaTrash,
+} from "react-icons/fa";
+import { MdEventAvailable, MdPayment } from "react-icons/md";
 
 const MyAppointments = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -172,9 +183,16 @@ const MyAppointments = () => {
     return new Date(dateString).toLocaleDateString(undefined, options);
   };
 
+  const formattedTime = (timeString) => {
+    if (!timeString) return "Not specified";
+    return timeString;
+  };
+
   const handleDelete = async (bookingId) => {
     try {
-      await axios.delete(`https://backend-z1qz.onrender.com/api/bookings/${bookingId}`);
+      await axios.delete(
+        `https://backend-z1qz.onrender.com/api/bookings/${bookingId}`
+      );
       setBookings(bookings.filter((booking) => booking._id !== bookingId));
       toast.success("Appointment deleted successfully!", {
         position: "top-right",
@@ -359,20 +377,7 @@ const MyAppointments = () => {
           {bookings.length === 0 ? (
             <div className="p-8 text-center">
               <div className="text-gray-400 mb-4">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-16 w-16 mx-auto"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={1}
-                    d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-                  />
-                </svg>
+                <FaCalendarAlt className="h-16 w-16 mx-auto" />
               </div>
               <h3 className="text-lg font-medium text-gray-700 mb-2">
                 No upcoming appointments
@@ -420,6 +425,11 @@ const MyAppointments = () => {
                           <span className="font-semibold">Date:</span>{" "}
                           {formatDate(booking.date)}
                         </p>
+                        <p>
+                          <span className="font-semibold">Time:</span>{" "}
+                          {formattedTime(booking.timeslot)}
+                        </p>
+
                         {booking.doctorDetails?.fees && (
                           <p>
                             <span className="font-semibold">Fees:</span>{" "}
@@ -447,17 +457,7 @@ const MyAppointments = () => {
                       <div className="bg-yellow-50 border-l-4 border-yellow-400 p-4 mb-4">
                         <div className="flex">
                           <div className="flex-shrink-0">
-                            <svg
-                              className="h-5 w-5 text-yellow-400"
-                              viewBox="0 0 20 20"
-                              fill="currentColor"
-                            >
-                              <path
-                                fillRule="evenodd"
-                                d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z"
-                                clipRule="evenodd"
-                              />
-                            </svg>
+                            <FaExclamationTriangle className="h-5 w-5 text-yellow-400" />
                           </div>
                           <div className="ml-3">
                             <p className="text-sm text-yellow-700">
@@ -472,15 +472,15 @@ const MyAppointments = () => {
                       <div className="flex justify-end space-x-2">
                         <button
                           onClick={() => handleUpdate(booking)}
-                          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200"
+                          className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200 flex items-center gap-2"
                         >
-                          Update
+                          <FaEdit /> Update
                         </button>
                         <button
                           onClick={() => handleDelete(booking._id)}
-                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200"
+                          className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200 flex items-center gap-2"
                         >
-                          Delete
+                          <FaTrash /> Delete
                         </button>
                       </div>
                     )}
@@ -500,19 +500,7 @@ const MyAppointments = () => {
                   onClick={() => setShowModal(false)}
                   className="text-gray-500 hover:text-gray-700"
                 >
-                  <svg
-                    className="w-6 h-6"
-                    fill="none"
-                    stroke="currentColor"
-                    viewBox="0 0 24 24"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      d="M6 18L18 6M6 6l12 12"
-                    />
-                  </svg>
+                  <FaTimes className="w-6 h-6" />
                 </button>
               </div>
 
@@ -525,8 +513,8 @@ const MyAppointments = () => {
               <form onSubmit={handleUpdateSubmit} className="space-y-4">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Booking ID
+                    <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <FaCalendarAlt /> Booking ID
                     </label>
                     <input
                       type="text"
@@ -537,8 +525,8 @@ const MyAppointments = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Doctor
+                    <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <FaUserMd /> Doctor
                     </label>
                     <input
                       type="text"
@@ -551,8 +539,8 @@ const MyAppointments = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Speciality
+                    <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <MdEventAvailable /> Speciality
                     </label>
                     <input
                       type="text"
@@ -563,8 +551,8 @@ const MyAppointments = () => {
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-gray-700">
-                      Email
+                    <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <FaPhone /> Email
                     </label>
                     <input
                       type="email"
@@ -575,8 +563,8 @@ const MyAppointments = () => {
                   </div>
 
                   <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Select Date
+                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <FaCalendarAlt /> Select Date
                     </label>
                     <select
                       name="date"
@@ -597,8 +585,8 @@ const MyAppointments = () => {
                   </div>
 
                   <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Select Time Slot
+                    <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2">
+                      <MdEventAvailable /> Select Time Slot
                     </label>
                     <select
                       name="time"
@@ -619,8 +607,8 @@ const MyAppointments = () => {
                   </div>
 
                   <div className="col-span-2">
-                    <label className="block text-sm font-medium text-gray-700">
-                      Message
+                    <label className="block text-sm font-medium text-gray-700 flex items-center gap-2">
+                      <FaStickyNote /> Message
                     </label>
                     <textarea
                       name="message"
