@@ -6,7 +6,7 @@ const EmergencyBanner = () => {
     <div className='bg-gradient-to-r from-blue-100 to-white'>
     <div className="max-w-5xl mx-auto px-4 py-12 ">
       <h1 className="text-3xl md:text-4xl font-bold text-red-600 text-center mb-6">
-        Emergency Help – AarogyaSapna
+        Emergency Help – Aarogya Sapna
       </h1>
 
       <p className="text-gray-700 text-center max-w-3xl mx-auto mb-10">
@@ -24,7 +24,7 @@ const EmergencyBanner = () => {
             <li><strong>Fire Brigade:</strong> 101</li>
             <li><strong>Police:</strong> 100</li>
             <li><strong>National Emergency:</strong> 112</li>
-            <li><strong>AarogyaSapna Emergency Helpline:</strong> +91-1234567890</li>
+            <li><strong>Aarogya Sapna Emergency Helpline:</strong> +91-1234567890</li>
           </ul>
         </div>
 
