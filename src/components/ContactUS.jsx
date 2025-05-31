@@ -60,7 +60,7 @@ const ContactUS = () => {
       <div className="max-w-7xl mx-auto relative">
         <div className="text-center mb-16">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-6 inline-block">
-            CONTACT <span className="text-blue-600">AAROGYASAPNA</span>
+            CONTACT <span className="text-blue-600">AAROGYA SAPNA</span>
           </h1>
           <p className="text-base md:text-lg text-gray-700 max-w-2xl mx-auto mb-4 leading-relaxed">
             We are here to help! Whether you have questions about our services,
