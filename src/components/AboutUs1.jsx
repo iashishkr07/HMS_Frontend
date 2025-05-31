@@ -63,7 +63,7 @@ const AboutUs1 = () => {
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 ">
         <section className="mb-16">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-6 inline-block">
-            ABOUT <span className="text-blue-600">AAROGYASAPNA</span>
+            ABOUT <span className="text-blue-600">AAROGYA SAPNA</span>
           </h1>
           <div className="flex flex-col md:flex-row gap-8 items-center">
             <div className="md:w-1/2">
@@ -77,14 +77,14 @@ const AboutUs1 = () => {
               <p className="text-base md:text-lg text-gray-700 mb-4 leading-relaxed">
                 Welcome to{" "}
                 <span className="font-semibold text-blue-600">
-                  AarogyaSapna
+                  Aarogya Sapna
                 </span>
                 , your trusted partner in managing healthcare needs conveniently
                 and efficiently. We understand the challenges individuals face
                 when scheduling doctor appointments and managing health records.
               </p>
               <p className="text-base md:text-lg text-gray-700 mb-6 leading-relaxed">
-                AarogyaSapna is committed to excellence in healthcare
+                Aarogya Sapna is committed to excellence in healthcare
                 technology. We continuously enhance our platform with the latest
                 advancements to improve user experience and deliver superior
                 service. Whether booking your first appointment or managing
@@ -106,7 +106,7 @@ const AboutUs1 = () => {
 
         <section className="mt-12">
           <h1 className="text-3xl md:text-4xl font-bold text-gray-800 border-b-2 border-blue-500 pb-2 mb-8 inline-block">
-            WHY CHOOSE <span className="text-blue-600">AAROGYASAPNA</span>
+            WHY CHOOSE <span className="text-blue-600">AAROGYA SAPNA</span>
           </h1>
           <Slider {...sliderSettings}>
             {whyChooseUsData.map((item, index) => (
@@ -139,7 +139,7 @@ const AboutUs1 = () => {
 
         <section className="mt-12 bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-6 md:p-8">
           <h2 className="text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6">
-            AarogyaSapna <span className="text-blue-600">Achievements</span>
+            Aarogya Sapna <span className="text-blue-600">Achievements</span>
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
             <div className="bg-white p-3 md:p-4 rounded-lg shadow text-center">
