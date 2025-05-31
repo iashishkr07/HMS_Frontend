@@ -8,7 +8,7 @@ const WhyChooseUs = () => {
     <section className="py-16 px-6 bg-gradient-to-r from-white to-blue-100 ">
       <div className="text-center mb-12">
         <h2 className="text-3xl sm:text-4xl font-bold text-blue-900">
-          WHY CHOOSE <span className="text-green-600">AAROGYASAPNA?</span>
+          WHY CHOOSE <span className="text-green-600">AAROGYA SAPNA?</span>
         </h2>
         <p className="mt-2 text-gray-600 text-sm sm:text-base max-w-xl mx-auto">
           We are committed to providing exceptional healthcare with compassion and innovation. Serving families and communities with trust since 1998.
