@@ -1,5 +1,5 @@
 import React from 'react'
-import Header1 from '../components/Header1'
+import Header from '../components/Header'
 import ServicesInfo from '../components/ServicesInfo'
 import Testimonials from '../components/Testimonials'
 import TopDoctors from '../components/TopDoctors'
@@ -11,7 +11,7 @@ const Home1 = () => {
     return (
         <div>
             <Navbar />
-            <Header1 />
+            <Header />
             <ServicesInfo />
             <TopDoctors />
             <AboutUs1 />
