@@ -21,16 +21,7 @@ const Appointments = () => {
   }, []);
 
   const getStatusColor = (status) => {
-    switch (status?.toLowerCase()) {
-      case "confirmed":
-        return "bg-green-100 text-green-800";
-      case "pending":
-        return "bg-yellow-100 text-yellow-800";
-      case "cancelled":
-        return "bg-red-100 text-red-800";
-      default:
-        return "bg-blue-100 text-blue-800";
-    }
+    return "bg-gray-100 text-gray-800";
   };
 
   if (loading) {
@@ -45,9 +36,6 @@ const Appointments = () => {
     <div className="min-h-screen bg-gray-50 p-8">
       <div className="max-w-7xl mx-auto">
         <div className="flex justify-between items-center mb-8 border-b pb-4">
-          <h2 className="text-3xl font-bold text-gray-800">
-            Doctor's Appointments
-          </h2>
           <span className="text-sm text-gray-500">
             Total Appointments: {bookings.length}
           </span>
