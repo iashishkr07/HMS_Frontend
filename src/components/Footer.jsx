@@ -50,7 +50,7 @@ const Footer = () => {
 
       <div className="footer-bottom">
         <p>
-          © {new Date().getFullYear()} ASAP Health (AarogyaSapna) — 
+          © {new Date().getFullYear()} ASAP Health (Aarogya Sapna) — 
           <span> "Dream of Health"</span> | 
           <a href="/privacy"> Privacy Policy</a> | 
           <a href="/terms"> Terms</a>
