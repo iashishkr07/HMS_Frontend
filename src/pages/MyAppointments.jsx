@@ -369,7 +369,7 @@ const MyAppointments = () => {
         theme="light"
       />
       <div className="container mx-auto px-4 py-8 max-w-4xl">
-        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8">
+        <div className="bg-white rounded-lg shadow-md overflow-hidden mb-8 mt-28">
           <div className="bg-blue-600 px-6 py-4">
             <h1 className="text-2xl font-bold text-white">Booking History</h1>
           </div>
