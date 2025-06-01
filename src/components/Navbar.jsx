@@ -7,6 +7,7 @@ import axios from "../api";
 const Navbar = () => {
   const navigate = useNavigate();
   const profileRef = useRef();
+  const mobileMenuRef = useRef();
 
   const [user, setUser] = useState(null);
   const [openMenu, setOpenMenu] = useState(null);
@@ -18,7 +19,10 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
-      axios.get("/user/me", {headers: { Authorization: `Bearer ${token}` }, })
+      axios
+        .get("/user/me", {
+          headers: { Authorization: `Bearer ${token}` },
+        })
         .then((res) => {
           setUser(res.data.user);
           if (res.data.user && !res.data.user.profilePic) {
@@ -32,6 +36,21 @@ const Navbar = () => {
     }
   }, []);
 
+  // Close mobile menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (
+        mobileMenuRef.current &&
+        !mobileMenuRef.current.contains(event.target)
+      ) {
+        setMobileMenuOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, []);
+
   const toggleMenu = (menuName) => {
     setOpenMenu(openMenu === menuName ? null : menuName);
   };
@@ -40,6 +59,8 @@ const Navbar = () => {
     localStorage.removeItem("token");
     setIsLoggedIn(false);
     setUser(null);
+    setProfileDropdownOpen(false);
+    setMobileMenuOpen(false);
     navigate("/");
     window.location.reload();
   };
@@ -55,21 +76,56 @@ const Navbar = () => {
     return assets.defaultAvatar;
   };
 
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    if (profileDropdownOpen) setProfileDropdownOpen(false);
+  };
+
+  const toggleProfileDropdown = () => {
+    setProfileDropdownOpen(!profileDropdownOpen);
+    if (mobileMenuOpen) setMobileMenuOpen(false);
+  };
+
   return (
-    <nav className="navbar">
+    <nav className="navbar" ref={mobileMenuRef}>
       <div className="navbar-header">
-        <img onClick={() => navigate("/")} src={assets.logo} alt="Logo" className="logo object-cover cursor-pointer w-full h-full" />
+        <img
+          onClick={() => {
+            navigate("/");
+            setMobileMenuOpen(false);
+          }}
+          src={assets.logo}
+          alt="Logo"
+          className="logo object-cover cursor-pointer w-full h-full"
+        />
+        <div
+          className={`hamburger ${mobileMenuOpen ? "active" : ""}`}
+          onClick={toggleMobileMenu}
+        >
+          &#9776;
+        </div>
       </div>
 
       <ul className={`nav-links ${mobileMenuOpen ? "active" : ""}`}>
         {!isLoggedIn ? (
-          <li> <Link to="/">Home</Link> </li>
+          <li>
+            <Link to="/" onClick={() => setMobileMenuOpen(false)}>
+              Home
+            </Link>
+          </li>
         ) : (
-          <li> <Link to="/1">Home</Link> </li>
+          <li>
+            <Link to="/1" onClick={() => setMobileMenuOpen(false)}>
+              Home
+            </Link>
+          </li>
         )}
 
         {["doctors", "services", "pages"].map((menu) => (
-          <li className={`dropdown ${openMenu === menu ? "openMenu" : ""}`} key={menu} >
+          <li
+            className={`dropdown ${openMenu === menu ? "openMenu" : ""}`}
+            key={menu}
+          >
             <span onClick={() => toggleMenu(menu)}>
               {menu.charAt(0).toUpperCase() + menu.slice(1)}
             </span>
@@ -78,32 +134,97 @@ const Navbar = () => {
                 <>
                   {!isLoggedIn && (
                     <>
-                      <li> <Link to="/doctors">Doctor List</Link> </li>
-                      <li> <Link to="/doctors/profile">Doctor Profile</Link> </li>
+                      <li>
+                        <Link
+                          to="/doctors"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Doctor List
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/doctors/profile"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Doctor Profile
+                        </Link>
+                      </li>
                     </>
                   )}
                   {isLoggedIn && (
-                    <li> <Link to="/doctors1">Doctor List</Link> </li>
+                    <li>
+                      <Link
+                        to="/doctors1"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Doctor List
+                      </Link>
+                    </li>
                   )}
                 </>
               )}
               {menu === "services" && (
-                <>
-                  <li> <Link to="/servicespage">Services</Link> </li>
-                </>
+                <li>
+                  <Link
+                    to="/servicespage"
+                    onClick={() => setMobileMenuOpen(false)}
+                  >
+                    Services
+                  </Link>
+                </li>
               )}
               {menu === "pages" && (
                 <>
-                  <li> <Link to="/about">About</Link> </li>
-                  <li> <Link to="/timetable">Time Table</Link> </li>
+                  <li>
+                    <Link to="/about" onClick={() => setMobileMenuOpen(false)}>
+                      About
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      to="/timetable"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Time Table
+                    </Link>
+                  </li>
                   {isLoggedIn && (
-                    <li> <Link to="/bookappointment">Appointment</Link> </li>
+                    <li>
+                      <Link
+                        to="/bookappointment"
+                        onClick={() => setMobileMenuOpen(false)}
+                      >
+                        Appointment
+                      </Link>
+                    </li>
                   )}
-                  <li> <Link to="/Testimonials">Testimonials</Link> </li>
+                  <li>
+                    <Link
+                      to="/Testimonials"
+                      onClick={() => setMobileMenuOpen(false)}
+                    >
+                      Testimonials
+                    </Link>
+                  </li>
                   {!isLoggedIn && (
                     <>
-                      <li> <Link to="/signup">Sign Up</Link> </li>
-                      <li> <Link to="/login">Login</Link> </li>
+                      <li>
+                        <Link
+                          to="/signup"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Sign Up
+                        </Link>
+                      </li>
+                      <li>
+                        <Link
+                          to="/login"
+                          onClick={() => setMobileMenuOpen(false)}
+                        >
+                          Login
+                        </Link>
+                      </li>
                     </>
                   )}
                 </>
@@ -111,41 +232,90 @@ const Navbar = () => {
             </ul>
           </li>
         ))}
-        <li> <Link to="/contact">Contact Us</Link> </li>
+        <li>
+          <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
+            Contact Us
+          </Link>
+        </li>
       </ul>
 
-      <div className="navbar-right flex items-center space-x-4 mx-8 mt-4 md:mt-0">
+      <div className={`navbar-right ${mobileMenuOpen ? "active" : ""}`}>
         {!isLoggedIn ? (
           <>
-            <Link to="/admin-login" className="btn btn-outline rounded-full"> Admin Panel </Link>
-            <Link to="/login" className="btn btn-primary"> Login </Link>
+            <Link
+              to="/admin-login"
+              className="btn btn-outline"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Admin Panel
+            </Link>
+            <Link
+              to="/login"
+              className="btn btn-primary"
+              onClick={() => setMobileMenuOpen(false)}
+            >
+              Login
+            </Link>
           </>
         ) : (
-          <div className="relative cursor-pointer flex items-center gap-2"
-            onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} ref={profileRef} >
-            <img src={getProfilePic()} className="w-11 h-11 rounded-full object-cover" alt="Profile" onError={(e) => {
-                e.target.src = assets.defaultAvatar;}}/>
-            <img src={assets.dropdown_icon} className="w-3 mt-2" alt="dropdown" />
+          <div
+            className="relative cursor-pointer flex items-center gap-2"
+            onClick={toggleProfileDropdown}
+            ref={profileRef}
+          >
+            <img
+              src={getProfilePic()}
+              className="w-11 h-11 rounded-full object-cover"
+              alt="Profile"
+              onError={(e) => {
+                e.target.src = assets.defaultAvatar;
+              }}
+            />
+            <img
+              src={assets.dropdown_icon}
+              className="w-3 mt-2"
+              alt="dropdown"
+            />
 
             {profileDropdownOpen && (
-              <div className="absolute right-0 mt-[4.5rem] w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                <Link to="/UserProfile" className="block px-4 py-2 hover:bg-gray-100" > My Profile </Link>
-                <Link to="/my-appointments" className="block px-4 py-2 hover:bg-gray-100" >
+              <div
+                className={`absolute right-0 mt-[4.5rem] w-48 bg-white shadow-lg rounded-lg py-2 z-50 ${
+                  window.innerWidth <= 768 ? "profile-dropdown-content" : ""
+                }`}
+              >
+                <Link
+                  to="/UserProfile"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    setMobileMenuOpen(false);
+                  }}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  to="/my-appointments"
+                  className="block px-4 py-2 hover:bg-gray-100"
+                  onClick={() => {
+                    setProfileDropdownOpen(false);
+                    setMobileMenuOpen(false);
+                  }}
+                >
                   My Appointments
                 </Link>
-                <span onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-100 cursor-pointer" > Logout
+                <span
+                  onClick={handleLogout}
+                  className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
+                >
+                  Logout
                 </span>
               </div>
             )}
           </div>
         )}
-        <div className="hamburger ml-4" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} >
-          &#9776;
-        </div>
       </div>
     </nav>
   );
 };
 
 export default Navbar;
-
