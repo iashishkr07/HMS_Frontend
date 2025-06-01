@@ -18,13 +18,9 @@ const Navbar = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
-      axios
-        .get("/user/me", {
-          headers: { Authorization: `Bearer ${token}` },
-        })
+      axios.get("/user/me", {headers: { Authorization: `Bearer ${token}` }, })
         .then((res) => {
           setUser(res.data.user);
-          // Ensure profilePic is included in the response
           if (res.data.user && !res.data.user.profilePic) {
             setUser((prev) => ({ ...prev, profilePic: assets.defaultAvatar }));
           }
@@ -48,15 +44,12 @@ const Navbar = () => {
     window.location.reload();
   };
 
-  // Function to get the correct profile picture URL
   const getProfilePic = () => {
     if (!user) return assets.defaultAvatar;
     if (user.profilePic) {
-      // Check if the URL is already absolute
       if (user.profilePic.startsWith("http")) {
         return user.profilePic;
       }
-      // Construct the full URL if it's a relative path
       return `${axios.defaults.baseURL}${user.profilePic}`;
     }
     return assets.defaultAvatar;
@@ -65,30 +58,18 @@ const Navbar = () => {
   return (
     <nav className="navbar">
       <div className="navbar-header">
-        <img
-          onClick={() => navigate("/")}
-          src={assets.logo}
-          alt="Logo"
-          className="logo object-cover cursor-pointer w-full h-full"
-        />
+        <img onClick={() => navigate("/")} src={assets.logo} alt="Logo" className="logo object-cover cursor-pointer w-full h-full" />
       </div>
 
       <ul className={`nav-links ${mobileMenuOpen ? "active" : ""}`}>
         {!isLoggedIn ? (
-          <li>
-            <Link to="/">Home</Link>
-          </li>
+          <li> <Link to="/">Home</Link> </li>
         ) : (
-          <li>
-            <Link to="/1">Home</Link>
-          </li>
+          <li> <Link to="/1">Home</Link> </li>
         )}
 
-        {["doctors", "services", "pages", "blogs"].map((menu) => (
-          <li
-            className={`dropdown ${openMenu === menu ? "openMenu" : ""}`}
-            key={menu}
-          >
+        {["doctors", "services", "pages"].map((menu) => (
+          <li className={`dropdown ${openMenu === menu ? "openMenu" : ""}`} key={menu} >
             <span onClick={() => toggleMenu(menu)}>
               {menu.charAt(0).toUpperCase() + menu.slice(1)}
             </span>
@@ -97,138 +78,68 @@ const Navbar = () => {
                 <>
                   {!isLoggedIn && (
                     <>
-                      <li>
-                        <Link to="/doctors">Doctor List</Link>
-                      </li>
-                      <li>
-                        <Link to="/doctors/profile">Doctor Profile</Link>
-                      </li>
+                      <li> <Link to="/doctors">Doctor List</Link> </li>
+                      <li> <Link to="/doctors/profile">Doctor Profile</Link> </li>
                     </>
                   )}
                   {isLoggedIn && (
-                    <li>
-                      <Link to="/doctors1">Doctor List</Link>
-                    </li>
+                    <li> <Link to="/doctors1">Doctor List</Link> </li>
                   )}
                 </>
               )}
               {menu === "services" && (
                 <>
-                  <li>
-                    <Link to="/servicespage">Services</Link>
-                  </li>
-                  <li>
-                    <Link to="/services/surgery">Surgery</Link>
-                  </li>
+                  <li> <Link to="/servicespage">Services</Link> </li>
                 </>
               )}
               {menu === "pages" && (
                 <>
-                  <li>
-                    <Link to="/about">About</Link>
-                  </li>
-                  <li>
-                    <Link to="/timetable">Time Table</Link>
-                  </li>
+                  <li> <Link to="/about">About</Link> </li>
+                  <li> <Link to="/timetable">Time Table</Link> </li>
                   {isLoggedIn && (
-                    <li>
-                      <Link to="/bookappointment">Appointment</Link>
-                    </li>
+                    <li> <Link to="/bookappointment">Appointment</Link> </li>
                   )}
-                  <li>
-                    <Link to="/Testimonials">Testimonials</Link>
-                  </li>
-                  <li>
-                    <Link to="/pricing">Our Pricing</Link>
-                  </li>
+                  <li> <Link to="/Testimonials">Testimonials</Link> </li>
                   {!isLoggedIn && (
                     <>
-                      <li>
-                        <Link to="/signup">Sign Up</Link>
-                      </li>
-                      <li>
-                        <Link to="/login">Login</Link>
-                      </li>
+                      <li> <Link to="/signup">Sign Up</Link> </li>
+                      <li> <Link to="/login">Login</Link> </li>
                     </>
                   )}
-                </>
-              )}
-              {menu === "blogs" && (
-                <>
-                  <li>
-                    <Link to="/blogs/latest">Latest Blogs</Link>
-                  </li>
-                  <li>
-                    <Link to="/blogs/popular">Popular Blogs</Link>
-                  </li>
                 </>
               )}
             </ul>
           </li>
         ))}
-        <li>
-          <Link to="/contact">Contact Us</Link>
-        </li>
+        <li> <Link to="/contact">Contact Us</Link> </li>
       </ul>
 
       <div className="navbar-right flex items-center space-x-4 mx-8 mt-4 md:mt-0">
         {!isLoggedIn ? (
           <>
-            <Link to="/admin-login" className="btn btn-outline rounded-full">
-              Admin Panel
-            </Link>
-            <Link to="/login" className="btn btn-primary">
-              Login
-            </Link>
+            <Link to="/admin-login" className="btn btn-outline rounded-full"> Admin Panel </Link>
+            <Link to="/login" className="btn btn-primary"> Login </Link>
           </>
         ) : (
-          <div
-            className="relative cursor-pointer flex items-center gap-2"
-            onClick={() => setProfileDropdownOpen(!profileDropdownOpen)}
-            ref={profileRef}
-          >
-            <img
-              src={getProfilePic()}
-              className="w-11 h-11 rounded-full object-cover"
-              alt="Profile"
-              onError={(e) => {
-                e.target.src = assets.defaultAvatar;
-              }}
-            />
-            <img
-              src={assets.dropdown_icon}
-              className="w-3 mt-2"
-              alt="dropdown"
-            />
+          <div className="relative cursor-pointer flex items-center gap-2"
+            onClick={() => setProfileDropdownOpen(!profileDropdownOpen)} ref={profileRef} >
+            <img src={getProfilePic()} className="w-11 h-11 rounded-full object-cover" alt="Profile" onError={(e) => {
+                e.target.src = assets.defaultAvatar;}}/>
+            <img src={assets.dropdown_icon} className="w-3 mt-2" alt="dropdown" />
 
             {profileDropdownOpen && (
               <div className="absolute right-0 mt-[4.5rem] w-48 bg-white shadow-lg rounded-lg py-2 z-50">
-                <Link
-                  to="/UserProfile"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
-                  My Profile
-                </Link>
-                <Link
-                  to="/my-appointments"
-                  className="block px-4 py-2 hover:bg-gray-100"
-                >
+                <Link to="/UserProfile" className="block px-4 py-2 hover:bg-gray-100" > My Profile </Link>
+                <Link to="/my-appointments" className="block px-4 py-2 hover:bg-gray-100" >
                   My Appointments
                 </Link>
-                <span
-                  onClick={handleLogout}
-                  className="block px-4 py-2 hover:bg-gray-100 cursor-pointer"
-                >
-                  Logout
+                <span onClick={handleLogout} className="block px-4 py-2 hover:bg-gray-100 cursor-pointer" > Logout
                 </span>
               </div>
             )}
           </div>
         )}
-        <div
-          className="hamburger ml-4"
-          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-        >
+        <div className="hamburger ml-4" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} >
           &#9776;
         </div>
       </div>
@@ -237,3 +148,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
