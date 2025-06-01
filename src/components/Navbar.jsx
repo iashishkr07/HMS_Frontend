@@ -36,7 +36,7 @@ const Navbar = () => {
     }
   }, []);
 
-  // Close mobile menu when clicking outside
+  // Close mobile menu and profile dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (
@@ -44,6 +44,9 @@ const Navbar = () => {
         !mobileMenuRef.current.contains(event.target)
       ) {
         setMobileMenuOpen(false);
+      }
+      if (profileRef.current && !profileRef.current.contains(event.target)) {
+        setProfileDropdownOpen(false);
       }
     };
 
@@ -263,14 +266,16 @@ const Navbar = () => {
             onClick={toggleProfileDropdown}
             ref={profileRef}
           >
-            <img
-              src={getProfilePic()}
-              className="w-11 h-11 rounded-full object-cover"
-              alt="Profile"
-              onError={(e) => {
-                e.target.src = assets.defaultAvatar;
-              }}
-            />
+            <div className="w-11 h-11 rounded-full overflow-hidden">
+              <img
+                src={getProfilePic()}
+                className="w-full h-full object-cover"
+                alt="Profile"
+                onError={(e) => {
+                  e.target.src = assets.defaultAvatar;
+                }}
+              />
+            </div>
             <img
               src={assets.dropdown_icon}
               className="w-3 mt-2"
@@ -279,9 +284,8 @@ const Navbar = () => {
 
             {profileDropdownOpen && (
               <div
-                className={`absolute right-0 mt-[4.5rem] w-48 bg-white shadow-lg rounded-lg py-2 z-50 ${
-                  window.innerWidth <= 768 ? "profile-dropdown-content" : ""
-                }`}
+                className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-lg py-2 z-50"
+                style={{ top: "100%" }}
               >
                 <Link
                   to="/UserProfile"
