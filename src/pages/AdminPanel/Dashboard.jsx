@@ -70,8 +70,7 @@ const Dashboard = () => {
 
         // Calculate total revenue (assuming each appointment has a fee)
         const totalRevenue = bookings.reduce((sum, booking) => {
-          const doctor = doctors.find((doc) => doc.name === booking.doctor);
-          return sum + (doctor?.fees || 0);
+          return sum + (Number(booking.fees) || 0);
         }, 0);
 
         // Update stats
