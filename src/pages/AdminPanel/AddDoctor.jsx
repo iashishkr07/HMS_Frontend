@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import axios from "axios"; 
+import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { FaUserMd, FaCamera, FaCheck } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -146,22 +146,22 @@ const AddDoctor = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-indigo-50 py-4">
+    <div className="min-h-screen bg-gradient-to-br from-teal-50 via-blue-50 to-indigo-50 py-4 px-4 sm:px-6">
       <div className="max-w-6xl mx-auto bg-white/80 backdrop-blur-sm rounded-xl shadow-xl overflow-hidden border border-white/20">
-        <div className="p-4">
-          <div className="flex items-center justify-between mb-4">
-            <h2 className="text-xl font-bold text-gray-800 flex items-center gap-2">
+        <div className="p-4 sm:p-6">
+          <div className="flex items-center justify-between mb-4 sm:mb-6">
+            <h2 className="text-lg sm:text-xl font-bold text-gray-800 flex items-center gap-2">
               <div className="p-1.5 rounded-lg bg-gradient-to-r from-teal-500 to-blue-500 text-white">
-                <FaUserMd className="text-lg" />
+                <FaUserMd className="text-base sm:text-lg" />
               </div>
               Add New Doctor
             </h2>
           </div>
 
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
             {/* Profile Picture Uploader - Centered */}
             <div className="flex justify-center">
-              <div className="relative w-40 h-40 group">
+              <div className="relative w-32 h-32 sm:w-40 sm:h-40 group">
                 <div
                   className="w-full h-full border-2 border-dashed border-teal-200 rounded-lg flex items-center justify-center cursor-pointer hover:border-teal-500 transition-all duration-300 group-hover:shadow-lg bg-gradient-to-br from-white to-teal-50"
                   onClick={() =>
@@ -176,16 +176,20 @@ const AddDoctor = () => {
                         className="w-full h-full object-cover rounded-lg"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-teal-900/60 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-300 rounded-lg flex items-center justify-center">
-                        <FaCamera className="text-white text-2xl" />
+                        <FaCamera className="text-white text-xl sm:text-2xl" />
                       </div>
                     </div>
                   ) : (
-                    <div className="text-center p-3">
-                      <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-teal-100 to-blue-100 flex items-center justify-center">
-                        <FaCamera className="text-teal-500 text-2xl" />
+                    <div className="text-center p-2 sm:p-3">
+                      <div className="w-12 h-12 sm:w-16 sm:h-16 mx-auto mb-2 rounded-full bg-gradient-to-br from-teal-100 to-blue-100 flex items-center justify-center">
+                        <FaCamera className="text-teal-500 text-xl sm:text-2xl" />
                       </div>
-                      <p className="text-sm text-gray-600">Click to upload</p>
-                      <p className="text-xs text-teal-500 mt-1">Max: 2MB</p>
+                      <p className="text-xs sm:text-sm text-gray-600">
+                        Click to upload
+                      </p>
+                      <p className="text-[10px] sm:text-xs text-teal-500 mt-1">
+                        Max: 2MB
+                      </p>
                     </div>
                   )}
                 </div>
@@ -200,19 +204,19 @@ const AddDoctor = () => {
             </div>
 
             {/* Form Fields Grid */}
-            <div className="grid grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
               {/* Personal Information */}
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <h3 className="text-sm font-semibold text-gray-800">
                   Personal Info
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <input
                     type="text"
                     name="name"
                     value={formData.name}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Full Name"
                   />
                   <input
@@ -220,7 +224,7 @@ const AddDoctor = () => {
                     name="email"
                     value={formData.email}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Email"
                   />
                   <input
@@ -228,24 +232,24 @@ const AddDoctor = () => {
                     name="password"
                     value={formData.password}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Password"
                   />
                 </div>
               </div>
 
               {/* Professional Information */}
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <h3 className="text-sm font-semibold text-gray-800">
                   Professional Info
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <input
                     type="text"
                     name="speciality"
                     value={formData.speciality}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Speciality"
                   />
                   <input
@@ -253,7 +257,7 @@ const AddDoctor = () => {
                     name="degree"
                     value={formData.degree}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Degree"
                   />
                   <input
@@ -261,7 +265,7 @@ const AddDoctor = () => {
                     name="experience"
                     value={formData.experience}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Experience"
                   />
                   <input
@@ -269,24 +273,24 @@ const AddDoctor = () => {
                     name="fees"
                     value={formData.fees}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Fees"
                   />
                 </div>
               </div>
 
               {/* Contact Information */}
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <h3 className="text-sm font-semibold text-gray-800">
                   Contact Info
                 </h3>
-                <div className="space-y-3">
+                <div className="space-y-2 sm:space-y-3">
                   <input
                     type="text"
                     name="address.street"
                     value={formData.address.street}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="Street Address"
                   />
                   <input
@@ -294,14 +298,14 @@ const AddDoctor = () => {
                     name="address.city"
                     value={formData.address.city}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50"
                     placeholder="City"
                   />
                   <textarea
                     name="about"
                     value={formData.about}
                     onChange={handleChange}
-                    className="w-full p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50 h-24"
+                    className="w-full p-2 sm:p-2.5 text-sm border border-teal-200 rounded-lg focus:ring-2 focus:ring-teal-500 focus:border-transparent transition-all bg-white/50 h-20 sm:h-24"
                     placeholder="About the doctor..."
                   />
                 </div>
@@ -312,7 +316,7 @@ const AddDoctor = () => {
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="px-5 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg hover:shadow-md transition-all flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
+                className="w-full sm:w-auto px-4 sm:px-5 py-2 bg-gradient-to-r from-teal-500 to-blue-500 text-white rounded-lg hover:shadow-md transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
               >
                 {isSubmitting ? (
                   <>
