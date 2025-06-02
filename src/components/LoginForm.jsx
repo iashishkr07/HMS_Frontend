@@ -20,7 +20,7 @@ const LoginForm = () => {
       localStorage.setItem('token', res.data.token);
       localStorage.setItem('user', JSON.stringify(res.data.user));
       navigate('/1');
-      window.location.reload();
+      // window.location.reload();
     } catch (err) {
       setErrorMessage(err.response?.data?.message || 'Login failed');
     }
