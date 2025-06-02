@@ -17,7 +17,7 @@ const ServicesInfo = () => {
       description:
         "Check our specialists’ availability and book appointments easily. We ensure timely consultation with top physicians across various departments.",
       linkText: "LEARN MORE →",
-      link: "/timetable1",
+      link: "/timetable",
     },
     {
       title: "What Our Patients Say",
