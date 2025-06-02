@@ -36,7 +36,7 @@ body {
   align-items: center;
   gap: 1.5rem;
   margin-left: 10rem;
-/*   margin-right: 10px; */
+  /* margin-right: 0px; */
   font-size: 1.2rem;
 }
 
@@ -53,7 +53,6 @@ body {
   display: flex;
   align-items: center;
   gap: 0.3rem;
-  
 }
 
 .nav-links a:hover {
@@ -289,6 +288,24 @@ body {
     padding: 0.6rem 1rem;
     font-size: 0.9rem;
   }
+
+  .navbar-mobile-buttons .btn {
+    font-size: 12px;
+    padding: 4px 10px;
+    min-width: unset;
+    height: 32px;
+  }
+
+  .navbar-mobile-buttons {
+    gap: 4px;
+  }
+
+  .mobile-small-btn {
+    font-size: 12px;
+    padding: 4px 10px;
+    min-width: unset;
+    height: 32px;
+  }
 }
 
 /* Profile Dropdown Styles */
@@ -390,5 +407,23 @@ body {
   .desktop-profile .profile-dropdown-content {
     right: 0;
     left: auto;
+  }
+}
+
+.navbar-mobile-buttons {
+  display: flex;
+  gap: 8px;
+  margin-left: auto;
+}
+
+@media (min-width: 992px) {
+  .navbar-mobile-buttons {
+    display: none;
+  }
+}
+
+@media (max-width: 991px) {
+  .navbar-right {
+    display: none;
   }
 }
