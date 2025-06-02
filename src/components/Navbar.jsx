@@ -79,6 +79,26 @@ const Navbar = () => {
           alt="Logo"
           className="logo object-cover cursor-pointer w-full h-full"
         />
+        <div className="navbar-mobile-buttons">
+          {!isLoggedIn && (
+            <>
+              <Link
+                to="/admin-login"
+                className="btn btn-outline rounded-full"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Admin Panel
+              </Link>
+              <Link
+                to="/login"
+                className="btn btn-primary"
+                onClick={() => setMobileMenuOpen(false)}
+              >
+                Login
+              </Link>
+            </>
+          )}
+        </div>
         {isLoggedIn && (
           <div className="profile-dropdown mobile-profile">
             <div
@@ -311,27 +331,6 @@ const Navbar = () => {
           </li>
         )}
       </ul>
-
-      <div className="navbar-right">
-        {!isLoggedIn && (
-          <>
-            <Link
-              to="/admin-login"
-              className="btn btn-outline rounded-full"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Admin Panel
-            </Link>
-            <Link
-              to="/login"
-              className="btn btn-primary"
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              Login
-            </Link>
-          </>
-        )}
-      </div>
     </nav>
   );
 };
