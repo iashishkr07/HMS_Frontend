@@ -44,9 +44,9 @@ const ServicesInfo = () => {
               <p className="service-description">{service.description}</p>
             )}
 
-            <a href={service.link} className="service-link">
+            <Link to={service.link} className="service-link">
               {service.linkText}
-            </a>
+            </Link>
           </article>
         ))}
       </div>
