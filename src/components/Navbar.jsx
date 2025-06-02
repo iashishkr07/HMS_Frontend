@@ -162,7 +162,7 @@ const Navbar = () => {
           </li>
         ) : (
           <li>
-            <Link to="/1" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/loged" onClick={() => setMobileMenuOpen(false)}>
               Home
             </Link>
           </li>
