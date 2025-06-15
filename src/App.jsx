@@ -23,7 +23,7 @@ import UserProfile from './components/UserProfile';
 import BookAppointment from './components/BookAppointment';
 import TimeTable from './components/TimeTable';
 import DoctorProfile from './components/DoctorProfile';
-import ContactUs from './components/ContactUs'; 
+import ContactUS from './components/ContactUS'; 
 import Footer from './components/Footer';
 import Testimonials from './components/Testimonials';
 import DoctorList from './components/DoctorList';
