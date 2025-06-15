@@ -279,7 +279,7 @@ const Navbar = () => {
           </li>
         ))}
         <li>
-          <Link to="/Contact" onClick={() => setMobileMenuOpen(false)}>
+          <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
             Contact Us
           </Link>
         </li>
