@@ -17,12 +17,24 @@ const LoginForm = () => {
     try {
       const res = await API.post("/login", form);
 
-      localStorage.setItem("token", res.data.token);
-      localStorage.setItem("user", JSON.stringify(res.data.user));
-      navigate("/1");
-      window.location.reload();
+      if (res.data && res.data.token) {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
+
+        // Navigate first, then reload
+        navigate("/1", { replace: true });
+        // Small delay before reload to ensure navigation completes
+        setTimeout(() => {
+          window.location.reload();
+        }, 100);
+      } else {
+        setErrorMessage("Invalid response from server");
+      }
     } catch (err) {
-      setErrorMessage(err.response?.data?.message || "Login failed");
+      console.error("Login error:", err);
+      setErrorMessage(
+        err.response?.data?.message || "Login failed. Please try again."
+      );
     }
   };
 
