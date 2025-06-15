@@ -275,36 +275,91 @@ body {
   }
 
   .profile-dropdown {
-    margin-left: 2.5rem;
-    margin-right: 0.5rem;
+    margin-left: 2rem;
   }
 
   .profile-trigger img:first-child {
-    width: 40px;
-    height: 40px;
+    width: 35px;
+    height: 35px;
   }
 
   .btn {
-    padding: 0.6rem 1rem;
-    font-size: 0.9rem;
+    padding: 0.4rem 0.8rem;
+    font-size: 0.8rem;
   }
 
   .navbar-mobile-buttons .btn {
-    font-size: 12px;
-    padding: 4px 10px;
-    min-width: unset;
-    height: 32px;
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
   }
 
   .navbar-mobile-buttons {
-    gap: 4px;
+    gap: 0.5rem;
   }
 
   .mobile-small-btn {
-    font-size: 12px;
-    padding: 4px 10px;
-    min-width: unset;
-    height: 32px;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+}
+
+@media (max-width: 340px) {
+  .navbar {
+    padding: 0.4rem;
+  }
+
+  .logo {
+    height: 35px;
+    width: 140px;
+  }
+
+  .navbar-header {
+    gap: 0.3rem;
+  }
+
+  .profile-dropdown {
+    margin-left: 1.5rem;
+  }
+
+  .profile-trigger img:first-child {
+    width: 30px;
+    height: 30px;
+  }
+
+  .btn {
+    padding: 0.3rem 0.6rem;
+    font-size: 0.75rem;
+  }
+
+  .navbar-mobile-buttons .btn {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.7rem;
+  }
+
+  .navbar-mobile-buttons {
+    gap: 0.4rem;
+  }
+
+  .mobile-small-btn {
+    padding: 0.2rem 0.4rem;
+    font-size: 0.65rem;
+  }
+
+  .nav-links {
+    font-size: 0.9rem;
+  }
+
+  .nav-links a {
+    font-size: 0.9rem;
+  }
+
+  .dropdown-menu {
+    min-width: 180px;
+  }
+
+  .dropdown-menu a {
+    font-size: 0.8rem;
+    padding: 0.4rem 0.8rem;
   }
 }
 
