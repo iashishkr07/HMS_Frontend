@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import API from "../api";
 import Navbar from "./Navbar";
+import { toast } from "react-toastify";
 
 const LoginForm = () => {
   const [form, setForm] = useState({ Email: "", Password: "" });
@@ -17,24 +18,31 @@ const LoginForm = () => {
     try {
       const res = await API.post("/login", form);
 
-      if (res.data && res.data.token) {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("user", JSON.stringify(res.data.user));
+      localStorage.setItem("token", res.data.token);
+      localStorage.setItem("user", JSON.stringify(res.data.user));
 
-        // Navigate first, then reload
-        navigate("/loged", { replace: true });
-        // Small delay before reload to ensure navigation completes
-        setTimeout(() => {
-          // window.location.reload();
-        }, 100);
-      } else {
-        setErrorMessage("Invalid response from server");
-      }
+      toast.success("Login successful!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      navigate("/loged");
+      // window.location.reload();
     } catch (err) {
-      console.error("Login error:", err);
-      setErrorMessage(
-        err.response?.data?.message || "Login failed. Please try again."
-      );
+      const errorMsg = err.response?.data?.message || "Login failed";
+      setErrorMessage(errorMsg);
+      toast.error(errorMsg, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
     }
   };
 
