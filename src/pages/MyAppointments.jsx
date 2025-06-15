@@ -15,6 +15,7 @@ import {
   FaTrash,
 } from "react-icons/fa";
 import { MdEventAvailable, MdPayment } from "react-icons/md";
+import { Link } from "react-router-dom";
 
 const MyAppointments = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -101,7 +102,8 @@ const MyAppointments = () => {
     const token = localStorage.getItem("token");
     if (token) {
       setIsLoggedIn(true);
-      axios.get("/user/me", {
+      axios
+        .get("/user/me", {
           headers: { Authorization: `Bearer ${token}` },
         })
         .then((res) => {
@@ -384,12 +386,12 @@ const MyAppointments = () => {
               <p className="text-gray-500">
                 You don't have any current or upcoming appointments.
               </p>
-              <button
-                onClick={() => (window.location.href = "/bookappointment")}
+              <Link
+                to="/bookappointment"
                 className="mt-4 bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition duration-200"
               >
                 Book Now
-              </button>
+              </Link>
             </div>
           ) : (
             <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -479,7 +481,7 @@ const MyAppointments = () => {
                           onClick={() => handleDelete(booking._id)}
                           className="bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded-md text-sm font-medium transition duration-200 flex items-center gap-2"
                         >
-                          <FaTrash /> Delete
+                          <FaTimes /> Cancel
                         </button>
                       </div>
                     )}
