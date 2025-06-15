@@ -25,7 +25,7 @@ const LoginForm = () => {
         navigate("/loged", { replace: true });
         // Small delay before reload to ensure navigation completes
         setTimeout(() => {
-          window.location.reload();
+          // window.location.reload();
         }, 100);
       } else {
         setErrorMessage("Invalid response from server");
