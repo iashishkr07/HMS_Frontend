@@ -21,6 +21,7 @@ import ServicesPage from './pages/ServicesPage';
 import TimeTable from './components/TimeTable';
 import DoctorProfile from './components/DoctorProfile';
 import Emergency from './pages/Emergency';
+import Contact from './pages/contact';
 import Footer from './components/Footer';
 import Testimonials from './components/Testimonials';
 import DoctorList from './components/DoctorList';
@@ -28,6 +29,7 @@ import Login from './components/Login';
 import ContactUs from './components/ContactUS';
 import Admin from './pages/Admin';
 import DoctorPage from './pages/DoctorPage';
+
 
 
 const App = () => {
@@ -47,6 +49,7 @@ const App = () => {
         {/* <Route path="/admin-login" element={<AdminLogin />} /> */}
         <Route path='/about' element={<About/>} />
         <Route path='/contact' element={<ContactUs/>} />
+        <Route path='/Contact' element={<contact/>} />
         <Route path='/profile' element={<Profile/>} />
         <Route path='/appointment' element={<Appointment />} />
         <Route path='/my-appointments' element={<MyAppointments/>} />
