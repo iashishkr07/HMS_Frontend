@@ -22,7 +22,7 @@ const LoginForm = () => {
         localStorage.setItem("user", JSON.stringify(res.data.user));
 
         // Navigate first, then reload
-        navigate("/1", { replace: true });
+        navigate("/loged", { replace: true });
         // Small delay before reload to ensure navigation completes
         setTimeout(() => {
           window.location.reload();
