@@ -162,7 +162,7 @@ const Navbar = () => {
           </li>
         ) : (
           <li>
-            <Link to="/loged" onClick={() => setMobileMenuOpen(false)}>
+            <Link to="/1" onClick={() => setMobileMenuOpen(false)}>
               Home
             </Link>
           </li>
@@ -279,7 +279,7 @@ const Navbar = () => {
           </li>
         ))}
         <li>
-          <Link to="/contact" onClick={() => setMobileMenuOpen(false)}>
+          <Link to="/Contact" onClick={() => setMobileMenuOpen(false)}>
             Contact Us
           </Link>
         </li>
