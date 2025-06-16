@@ -29,7 +29,7 @@ const Dashboard = () => {
 
         // Calculate total fees from all bookings
         const totalFees = bookingsData.reduce(
-          (sum, booking) => sum + (booking.fees || 0),
+          (sum, booking) => sum + Number(booking.fees || 0),
           0
         );
 
