@@ -29,7 +29,6 @@ const DoctorPanel = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
-      {/* Mobile Menu Button */}
       <button
         onClick={toggleSidebar}
         className="lg:hidden fixed top-16 left-4 z-51 p-2 rounded-md bg-white shadow-md"
@@ -37,12 +36,11 @@ const DoctorPanel = () => {
         {isSidebarOpen ? <FaTimes /> : <FaBars />}
       </button>
 
-      {/* Sidebar */}
       <div
         className={`
         fixed lg:fixed top-16 lg:top-24 bottom-0 lg:bottom-24 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 transition-transform duration-300 ease-in-out z-50 w-64`}
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out z-50 w-64 bg-white lg:bg-transparent`}
       >
         <div className="h-full p-6 flex flex-col justify-start">
           <div className="space-y-6 text-gray-800">
@@ -62,7 +60,6 @@ const DoctorPanel = () => {
         </div>
       </div>
 
-      {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
           className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden pointer-events-none"
@@ -70,7 +67,6 @@ const DoctorPanel = () => {
         />
       )}
 
-      {/* Main Content */}
       <div className="flex-1 p-4 lg:p-6 w-full lg:ml-64">
         <div className="mt-12 lg:mt-0">{renderPage()}</div>
       </div>
