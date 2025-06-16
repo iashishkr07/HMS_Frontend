@@ -31,7 +31,6 @@ const LoginForm = () => {
       });
 
       navigate("/loged");
-      // window.location.reload();
     } catch (err) {
       const errorMsg = err.response?.data?.message || "Login failed";
       setErrorMessage(errorMsg);
@@ -49,52 +48,65 @@ const LoginForm = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
-        <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">Login</h2>
-          <p className="text-sm text-gray-500 mb-6">
-            Please log in to book an appointment
-          </p>
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-100 p-4">
+        <div className="w-full max-w-md bg-white rounded-3xl shadow-2xl p-8 space-y-6 backdrop-blur-sm bg-opacity-90">
+          <div className="text-center space-y-2">
+            <h2 className="text-3xl font-bold text-gray-800">Welcome Back</h2>
+            <p className="text-gray-500">Sign in to continue to your account</p>
+          </div>
 
-          <form onSubmit={handleSubmit}>
-            <label className="block mb-2 text-sm text-gray-600">Email</label>
-            <input
-              type="email"
-              name="Email"
-              value={form.Email}
-              onChange={handleChange}
-              className="w-full mb-4 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">Email</label>
+              <input
+                type="email"
+                name="Email"
+                value={form.Email}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                placeholder="Enter your email"
+                required
+              />
+            </div>
 
-            <label className="block mb-2 text-sm text-gray-600">Password</label>
-            <input
-              type="password"
-              name="Password"
-              value={form.Password}
-              onChange={handleChange}
-              className="w-full mb-6 px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-              required
-            />
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-700">
+                Password
+              </label>
+              <input
+                type="password"
+                name="Password"
+                value={form.Password}
+                onChange={handleChange}
+                className="w-full px-4 py-3 rounded-xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition duration-200"
+                placeholder="Enter your password"
+                required
+              />
+            </div>
 
             {errorMessage && (
-              <p className="text-red-500 text-sm mb-4">{errorMessage}</p>
+              <p className="text-red-500 text-sm font-medium">{errorMessage}</p>
             )}
 
             <button
               type="submit"
-              className="w-full py-2 bg-indigo-500 text-white rounded-lg hover:bg-indigo-600 transition"
+              className="w-full py-3 bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-xl font-medium hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition duration-200 transform hover:scale-[1.02]"
             >
-              Login
+              Sign In
             </button>
           </form>
 
-          <p className="text-sm text-gray-600 mt-4 text-center">
-            New here?{" "}
-            <Link to="/signup" className="text-indigo-500 hover:underline">
-              Create an account
-            </Link>
-          </p>
+          <div className="text-center">
+            <p className="text-gray-600">
+              Don't have an account?{" "}
+              <Link
+                to="/signup"
+                className="text-blue-600 hover:text-blue-700 font-medium hover:underline transition duration-200"
+              >
+                Create one now
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </>
