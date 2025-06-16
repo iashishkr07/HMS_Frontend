@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { FaUserMd, FaCalendarAlt, FaChartLine, FaBell } from "react-icons/fa";
+import {
+  FaUserMd,
+  FaCalendarAlt,
+  FaChartLine,
+  FaBell,
+  FaPhone,
+  FaEnvelope,
+} from "react-icons/fa";
 import doctorApi from "../../doctorApi";
 
 const Dashboard = () => {
@@ -22,23 +29,47 @@ const Dashboard = () => {
 
         // Calculate statistics
         const today = new Date();
-        const todayAppointments = bookingsData.filter((booking) => {
-          const bookingDate = new Date(booking.date);
-          return bookingDate.toDateString() === today.toDateString();
-        });
+        today.setHours(0, 0, 0, 0);
 
-        // Calculate total fees from all bookings
-        const totalFees = bookingsData.reduce(
-          (sum, booking) => sum + Number(booking.fees || 0),
-          0
+        // Get first day of current month
+        const firstDayOfMonth = new Date(
+          today.getFullYear(),
+          today.getMonth(),
+          1
         );
 
+        // Filter today's appointments
+        const todayAppointments = bookingsData.filter((booking) => {
+          const bookingDate = new Date(booking.date);
+          bookingDate.setHours(0, 0, 0, 0);
+          return bookingDate.getTime() === today.getTime();
+        });
+
+        // Calculate monthly revenue (only from completed appointments)
+        const monthlyRevenue = bookingsData
+          .filter((booking) => {
+            const bookingDate = new Date(booking.date);
+            return (
+              bookingDate >= firstDayOfMonth && booking.status === "completed"
+            );
+          })
+          .reduce((sum, booking) => sum + Number(booking.fees || 0), 0);
+
+        // Count unique patients
+        const uniquePatients = new Set(
+          bookingsData.map((booking) => booking.email)
+        ).size;
+
+        // Count pending notifications
+        const pendingNotifications = bookingsData.filter(
+          (booking) => booking.status === "pending"
+        ).length;
+
         setStats({
-          totalPatients: bookingsData.length,
+          totalPatients: uniquePatients,
           todayAppointments: todayAppointments.length,
-          monthlyRevenue: totalFees,
-          notifications: bookingsData.filter((b) => b.status === "pending")
-            .length,
+          monthlyRevenue: monthlyRevenue,
+          notifications: pendingNotifications,
         });
       } catch (error) {
         console.error("Error fetching bookings:", error);
@@ -99,7 +130,7 @@ const Dashboard = () => {
               <div className="ml-4">
                 <h2 className="text-gray-600 text-sm">Monthly Revenue</h2>
                 <p className="text-2xl font-semibold text-gray-900">
-                  ₹{Number(stats.monthlyRevenue)}
+                  ₹{stats.monthlyRevenue.toLocaleString()}
                 </p>
               </div>
             </div>
@@ -120,85 +151,86 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* Recent Activity and Upcoming Appointments */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {/* Recent Activity */}
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">
-                Recent Activity
-              </h3>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                {bookings.slice(0, 3).map((booking) => (
-                  <div key={booking._id} className="flex items-start">
+        {/* Recent Activity */}
+        <div className="bg-white rounded-lg shadow">
+          <div className="px-6 py-4 border-b border-gray-200">
+            <h3 className="text-lg font-medium text-gray-900">
+              Recent Activity
+            </h3>
+          </div>
+          <div className="p-6">
+            <div className="space-y-6">
+              {bookings
+                .sort((a, b) => new Date(b.date) - new Date(a.date))
+                .slice(0, 5)
+                .map((booking) => (
+                  <div
+                    key={booking._id}
+                    className="flex items-start space-x-4 p-4 bg-gray-50 rounded-lg"
+                  >
                     <div className="flex-shrink-0">
-                      <div className="h-8 w-8 rounded-full bg-blue-100 flex items-center justify-center">
-                        <FaUserMd className="h-4 w-4 text-blue-600" />
+                      <div className="h-12 w-12 rounded-full bg-blue-100 flex items-center justify-center">
+                        <FaUserMd className="h-6 w-6 text-blue-600" />
                       </div>
                     </div>
-                    <div className="ml-4">
-                      <p className="text-sm font-medium text-gray-900">
-                        Patient Consultation
-                      </p>
-                      <p className="text-sm text-gray-500">
-                        Completed consultation with {booking.name}
-                      </p>
-                      <p className="text-xs text-gray-400">
-                        {new Date(booking.date).toLocaleDateString()} at{" "}
-                        {booking.time}
-                      </p>
+                    <div className="flex-grow">
+                      <div className="flex items-center justify-between">
+                        <h4 className="text-lg font-medium text-gray-900">
+                          {booking.name}
+                        </h4>
+                        <span
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                            booking.status === "completed"
+                              ? "bg-green-100 text-green-800"
+                              : booking.status === "pending"
+                              ? "bg-yellow-100 text-yellow-800"
+                              : booking.status === "cancelled"
+                              ? "bg-red-100 text-red-800"
+                              : "bg-blue-100 text-blue-800"
+                          }`}
+                        >
+                          {booking.status}
+                        </span>
+                      </div>
+                      <div className="mt-2 grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="space-y-2">
+                          <p className="text-sm text-gray-600 flex items-center">
+                            <FaCalendarAlt className="mr-2" />
+                            {new Date(
+                              booking.date
+                            ).toLocaleDateString()} at {booking.timeslot}
+                          </p>
+                          <p className="text-sm text-gray-600 flex items-center">
+                            <FaPhone className="mr-2" />
+                            {booking.phone}
+                          </p>
+                          <p className="text-sm text-gray-600 flex items-center">
+                            <FaEnvelope className="mr-2" />
+                            {booking.email}
+                          </p>
+                        </div>
+                        <div className="space-y-2">
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">
+                              Consultation Type:
+                            </span>{" "}
+                            {booking.type || "General Checkup"}
+                          </p>
+                          <p className="text-sm text-gray-600">
+                            <span className="font-medium">Fees:</span> ₹
+                            {Number(booking.fees || 0).toLocaleString()}
+                          </p>
+                          {booking.message && (
+                            <p className="text-sm text-gray-600">
+                              <span className="font-medium">Message:</span>{" "}
+                              {booking.message}
+                            </p>
+                          )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Upcoming Appointments */}
-          <div className="bg-white rounded-lg shadow">
-            <div className="px-6 py-4 border-b border-gray-200">
-              <h3 className="text-lg font-medium text-gray-900">
-                Upcoming Appointments
-              </h3>
-            </div>
-            <div className="p-6">
-              <div className="space-y-4">
-                {bookings
-                  .filter((booking) => new Date(booking.date) >= new Date())
-                  .slice(0, 3)
-                  .map((booking) => (
-                    <div
-                      key={booking._id}
-                      className="flex items-center justify-between"
-                    >
-                      <div className="flex items-center">
-                        <div className="h-10 w-10 rounded-full bg-gray-200 flex items-center justify-center">
-                          <span className="text-gray-600 font-medium">
-                            {booking.name.charAt(0).toUpperCase()}
-                          </span>
-                        </div>
-                        <div className="ml-4">
-                          <p className="text-sm font-medium text-gray-900">
-                            {booking.name}
-                          </p>
-                          <p className="text-sm text-gray-500">
-                            {booking.type || "General Checkup"}
-                          </p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-sm font-medium text-gray-900">
-                          {booking.time}
-                        </p>
-                        <p className="text-sm text-gray-500">
-                          {new Date(booking.date).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-              </div>
             </div>
           </div>
         </div>
