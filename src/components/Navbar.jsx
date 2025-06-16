@@ -139,9 +139,9 @@ const Navbar = () => {
                 >
                   My Appointments
                 </Link>
-                <span onClick={handleLogout} className="dropdown-item">
+                <Link to="/" onClick={handleLogout} className="dropdown-item">
                   Logout
-                </span>
+                </Link>
               </div>
             )}
           </div>
