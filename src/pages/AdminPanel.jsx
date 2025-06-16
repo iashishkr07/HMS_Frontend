@@ -42,20 +42,23 @@ const AdminPanel = () => {
 
   return (
     <div className="flex min-h-screen bg-gray-100">
+      {/* Mobile Menu Button */}
       <button
         onClick={toggleSidebar}
-        className="lg:hidden fixed top-32 left-4 z-50 p-2 rounded-md bg-white shadow-md"
+        className="lg:hidden fixed top-16 left-4 z-51 p-2 rounded-md bg-white shadow-md"
       >
         {isSidebarOpen ? <FaTimes /> : <FaBars />}
       </button>
 
+      {/* Sidebar */}
       <div
-        className={`fixed lg:static inset-y-0 left-0 transform ${
+        className={`
+        fixed lg:static top-16 bottom-0 left-0 transform ${
           isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-        } lg:translate-x-0 transition-transform duration-300 ease-in-out z-40 w-64 bg-white shadow-lg`}
+        } lg:translate-x-0 transition-transform duration-300 ease-in-out z-50 w-64 bg-white shadow-lg`}
       >
-        <div className="h-full p-6">
-          <div className="space-y-6 text-gray-800 mt-32">
+        <div className="h-full p-6 flex flex-col justify-start">
+          <div className="space-y-6 text-gray-800">
             <div
               onClick={() => handlePageChange("Dashboard")}
               className="flex items-center gap-3 cursor-pointer hover:text-blue-600"
@@ -84,16 +87,18 @@ const AdminPanel = () => {
         </div>
       </div>
 
-      <div className="flex-1 p-4 lg:p-6 w-full">
-        <div className="mt-12 lg:mt-0">{renderPage()}</div>
-      </div>
-
+      {/* Overlay for mobile */}
       {isSidebarOpen && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 lg:hidden"
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 lg:hidden pointer-events-none"
           onClick={toggleSidebar}
         />
       )}
+
+      {/* Main Content */}
+      <div className="flex-1 p-4 lg:p-6 w-full">
+        <div className="mt-12 lg:mt-0">{renderPage()}</div>
+      </div>
     </div>
   );
 };
