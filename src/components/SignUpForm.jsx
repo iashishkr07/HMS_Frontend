@@ -133,162 +133,204 @@ const SignUpForm = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center p-4 bg-gray-50">
+      <div className="min-h-screen flex items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8 bg-gradient-to-br from-blue-50 to-indigo-50">
         <ToastContainer />
-        <div className="w-full max-w-md bg-white rounded-lg shadow p-8">
-          <h2 className="text-2xl font-bold text-gray-800 mb-2">
+        <div className="w-full max-w-4xl bg-white rounded-2xl shadow-xl p-4 sm:p-4 md:p-6 lg:p-8 transform hover:scale-[1.01] transition-transform duration-300">
+          <h2 className="text-2xl sm:text-2xl md:text-3xl lg:text-4xl font-bold text-gray-800 mb-2 sm:mb-2 md:mb-2 text-center">
             Create Account
           </h2>
-          <p className="text-sm text-gray-500 mb-6">
+          <p className="text-sm sm:text-sm md:text-base text-gray-500 mb-4 sm:mb-4 md:mb-6 text-center">
             Please sign up to book appointment
           </p>
 
           {errors.form && (
-            <div className="mb-4 p-2 bg-red-100 text-red-700 rounded text-sm">
+            <div className="mb-4 sm:mb-3 md:mb-4 p-3 sm:p-2 md:p-3 bg-red-50 text-red-600 rounded-lg text-sm sm:text-sm md:text-base border border-red-200">
               {errors.form}
             </div>
           )}
 
           <form onSubmit={handleSubmit} noValidate>
-            <div className="flex flex-col items-center mb-6">
-              <div
-                className="relative w-24 h-24 rounded-full bg-gray-100 border border-gray-300 flex items-center justify-center cursor-pointer overflow-hidden"
-                onClick={triggerFileInput}
-              >
-                {previewImage ? (
-                  <img
-                    src={previewImage}
-                    alt="Preview"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-gray-400 text-4xl">+</span>
-                )}
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-4 md:gap-6">
+              <div className="flex items-center justify-center sm:justify-start md:justify-center mb-4 sm:mb-0">
+                <div
+                  className="relative w-28 h-28 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-36 lg:h-36 rounded-full bg-gradient-to-br from-blue-100 to-indigo-100 border-2 border-dashed border-blue-300 flex items-center justify-center cursor-pointer overflow-hidden hover:border-blue-400 transition-colors duration-300"
+                  onClick={triggerFileInput}
+                >
+                  {previewImage ? (
+                    <img
+                      src={previewImage}
+                      alt="Preview"
+                      className="w-full h-full object-cover"
+                    />
+                  ) : (
+                    <div className="text-center">
+                      <span className="text-blue-400 text-4xl sm:text-3xl md:text-4xl lg:text-5xl block mb-2">
+                        +
+                      </span>
+                      <span className="text-blue-400 text-sm sm:text-xs md:text-sm">
+                        Upload Photo
+                      </span>
+                    </div>
+                  )}
+                </div>
+                <input
+                  type="file"
+                  ref={fileInputRef}
+                  name="profilePic"
+                  accept="image/*"
+                  onChange={handleChange}
+                  disabled={loading}
+                  className="hidden"
+                />
               </div>
-              <input
-                type="file"
-                ref={fileInputRef}
-                name="profilePic"
-                accept="image/*"
-                onChange={handleChange}
-                disabled={loading}
-                className="hidden"
-              />
-              <p className="text-xs text-gray-500 mt-2">
-                Click to upload photo
-              </p>
+
+              <div className="sm:col-span-1 lg:col-span-2">
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-4 md:gap-6">
+                  <div>
+                    <label className="block mb-2 sm:mb-1 md:mb-1 text-sm sm:text-sm md:text-base font-medium text-gray-700">
+                      Full Name
+                    </label>
+                    <input
+                      type="text"
+                      name="FullName"
+                      value={form.FullName}
+                      onChange={handleChange}
+                      disabled={loading}
+                      className={`w-full px-4 sm:px-3 md:px-4 py-3 sm:py-2 md:py-2.5 text-base sm:text-sm md:text-base rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 ${
+                        loading ? "bg-gray-50" : "bg-white"
+                      }`}
+                      placeholder="Enter your full name"
+                    />
+                    {errors.FullName && (
+                      <p className="mt-2 sm:mt-1 text-sm sm:text-sm md:text-base text-red-500">
+                        {errors.FullName}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 sm:mb-1 md:mb-1 text-sm sm:text-sm md:text-base font-medium text-gray-700">
+                      Email
+                    </label>
+                    <input
+                      type="email"
+                      name="Email"
+                      value={form.Email}
+                      onChange={handleChange}
+                      disabled={loading}
+                      className={`w-full px-4 sm:px-3 md:px-4 py-3 sm:py-2 md:py-2.5 text-base sm:text-sm md:text-base rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 ${
+                        loading ? "bg-gray-50" : "bg-white"
+                      }`}
+                      placeholder="Enter your email"
+                    />
+                    {errors.Email && (
+                      <p className="mt-2 sm:mt-1 text-sm sm:text-sm md:text-base text-red-500">
+                        {errors.Email}
+                      </p>
+                    )}
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 sm:mb-1 md:mb-1 text-sm sm:text-sm md:text-base font-medium text-gray-700">
+                      Phone
+                    </label>
+                    <input
+                      type="tel"
+                      name="Phone"
+                      value={form.Phone}
+                      onChange={handleChange}
+                      disabled={loading}
+                      className={`w-full px-4 sm:px-3 md:px-4 py-3 sm:py-2 md:py-2.5 text-base sm:text-sm md:text-base rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 ${
+                        loading ? "bg-gray-50" : "bg-white"
+                      }`}
+                      placeholder="Enter your phone number"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block mb-2 sm:mb-1 md:mb-1 text-sm sm:text-sm md:text-base font-medium text-gray-700">
+                      Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showPassword ? "text" : "password"}
+                        name="Password"
+                        value={form.Password}
+                        onChange={handleChange}
+                        disabled={loading}
+                        className={`w-full px-4 sm:px-3 md:px-4 py-3 sm:py-2 md:py-2.5 text-base sm:text-sm md:text-base rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 ${
+                          loading ? "bg-gray-50" : "bg-white"
+                        }`}
+                        placeholder="Enter your password"
+                      />
+                      <button
+                        type="button"
+                        onClick={() => setShowPassword(!showPassword)}
+                        className="absolute right-4 sm:right-3 md:right-4 top-1/2 transform -translate-y-1/2 text-sm sm:text-sm md:text-base text-gray-500 hover:text-gray-700"
+                        disabled={loading}
+                      >
+                        {showPassword ? "Hide" : "Show"}
+                      </button>
+                    </div>
+                    {errors.Password && (
+                      <p className="mt-2 sm:mt-1 text-sm sm:text-sm md:text-base text-red-500">
+                        {errors.Password}
+                      </p>
+                    )}
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block mb-2 sm:mb-1 md:mb-1 text-sm sm:text-sm md:text-base font-medium text-gray-700">
+                      Confirm Password
+                    </label>
+                    <div className="relative">
+                      <input
+                        type={showConfirmPassword ? "text" : "password"}
+                        name="ConfirmPassword"
+                        value={form.ConfirmPassword}
+                        onChange={handleChange}
+                        disabled={loading}
+                        className={`w-full px-4 sm:px-3 md:px-4 py-3 sm:py-2 md:py-2.5 text-base sm:text-sm md:text-base rounded-lg border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-transparent transition-all duration-300 ${
+                          loading ? "bg-gray-50" : "bg-white"
+                        }`}
+                        placeholder="Confirm your password"
+                      />
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setShowConfirmPassword(!showConfirmPassword)
+                        }
+                        className="absolute right-4 sm:right-3 md:right-4 top-1/2 transform -translate-y-1/2 text-sm sm:text-sm md:text-base text-gray-500 hover:text-gray-700"
+                        disabled={loading}
+                      >
+                        {showConfirmPassword ? "Hide" : "Show"}
+                      </button>
+                    </div>
+                    {errors.ConfirmPassword && (
+                      <p className="mt-2 sm:mt-1 text-sm sm:text-sm md:text-base text-red-500">
+                        {errors.ConfirmPassword}
+                      </p>
+                    )}
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <label className="block mb-1 text-sm text-gray-600">
-              Full Name
-            </label>
-            <input
-              type="text"
-              name="FullName"
-              value={form.FullName}
-              onChange={handleChange}
-              disabled={loading}
-              className={`w-full mb-1 px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400 ${
-                loading ? "bg-gray-100" : ""
-              }`}
-            />
-            {errors.FullName && (
-              <p className="text-sm text-red-600 mb-2">{errors.FullName}</p>
-            )}
-
-            <label className="block mb-1 text-sm text-gray-600">Email</label>
-            <input
-              type="email"
-              name="Email"
-              value={form.Email}
-              onChange={handleChange}
-              disabled={loading}
-              className={`w-full mb-1 px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400 ${
-                loading ? "bg-gray-100" : ""
-              }`}
-            />
-            {errors.Email && (
-              <p className="text-sm text-red-600 mb-2">{errors.Email}</p>
-            )}
-
-            <label className="block mb-1 text-sm text-gray-600">Phone</label>
-            <input
-              type="tel"
-              name="Phone"
-              value={form.Phone}
-              onChange={handleChange}
-              disabled={loading}
-              className={`w-full mb-1 px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400 ${
-                loading ? "bg-gray-100" : ""
-              }`}
-            />
-
-            <label className="block mb-1 text-sm text-gray-600">Password</label>
-            <div className="relative">
-              <input
-                type={showPassword ? "text" : "password"}
-                name="Password"
-                value={form.Password}
-                onChange={handleChange}
-                disabled={loading}
-                className={`w-full mb-1 px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400 ${
-                  loading ? "bg-gray-100" : ""
-                }`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-2 text-sm text-gray-500"
-                disabled={loading}
-              >
-                {showPassword ? "Hide" : "Show"}
-              </button>
-            </div>
-            {errors.Password && (
-              <p className="text-sm text-red-600 mb-2">{errors.Password}</p>
-            )}
-
-            <label className="block mb-1 text-sm text-gray-600">
-              Confirm Password
-            </label>
-            <div className="relative">
-              <input
-                type={showConfirmPassword ? "text" : "password"}
-                name="ConfirmPassword"
-                value={form.ConfirmPassword}
-                onChange={handleChange}
-                disabled={loading}
-                className={`w-full mb-1 px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-blue-400 ${
-                  loading ? "bg-gray-100" : ""
-                }`}
-              />
-              <button
-                type="button"
-                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-2 text-sm text-gray-500"
-                disabled={loading}
-              >
-                {showConfirmPassword ? "Hide" : "Show"}
-              </button>
-            </div>
-            {errors.ConfirmPassword && (
-              <p className="text-sm text-red-600 mb-4">
-                {errors.ConfirmPassword}
-              </p>
-            )}
 
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2 bg-indigo-500 text-white rounded hover:bg-indigo-600 disabled:opacity-50"
+              className="w-full mt-6 sm:mt-4 md:mt-6 py-3 sm:py-2 md:py-3 text-base sm:text-base md:text-lg bg-gradient-to-r from-blue-500 to-indigo-600 text-white rounded-lg font-medium hover:from-blue-600 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 transform hover:scale-[1.02] transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               {loading ? "Creating account..." : "Create account"}
             </button>
           </form>
 
-          <p className="text-sm text-gray-600 mt-4 text-center">
+          <p className="text-sm sm:text-sm md:text-base text-gray-600 mt-4 sm:mt-4 md:mt-6 text-center">
             Already have an account?{" "}
-            <Link to="/login" className="text-indigo-500 hover:underline">
+            <Link
+              to="/login"
+              className="text-blue-600 hover:text-blue-700 font-medium hover:underline"
+            >
               Login here
             </Link>
           </p>
