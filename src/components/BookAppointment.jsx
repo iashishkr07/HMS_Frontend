@@ -128,7 +128,7 @@ const BookAppointment = () => {
               <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
                 <div>
                   <h1 className="text-xl sm:text-2xl font-bold">
-                    Book Your Medical Appointment
+                    Book Your Appointment
                   </h1>
                   <p className="text-xs sm:text-sm text-blue-100">
                     Connect with our expert doctors
